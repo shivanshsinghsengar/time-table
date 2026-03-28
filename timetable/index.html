@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeTable Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple:#7c3aed; --purple-light:#ede9fe;
+            --blue:#2563eb;   --blue-light:#dbeafe;
+            --teal:#0d9488;   --teal-light:#ccfbf1;
+            --pink:#db2777;   --pink-light:#fce7f3;
+            --bg:#f8fafc; --white:#ffffff; --border:#e2e8f0;
+            --text:#1e293b; --muted:#64748b; --light:#f1f5f9;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+        nav { background:var(--white); border-bottom:1px solid var(--border); padding:14px 48px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+        .nav-logo { font-size:1.4rem; font-weight:900; background:linear-gradient(135deg,var(--purple),var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .nav-tag { font-size:0.76rem; font-weight:600; color:var(--purple); background:var(--purple-light); padding:5px 14px; border-radius:20px; }
+        .hero { background:linear-gradient(135deg,#7c3aed 0%,#2563eb 50%,#0d9488 100%); padding:80px 48px 70px; text-align:center; position:relative; overflow:hidden; }
+        .hero::before { content:''; position:absolute; top:-80px; right:-80px; width:320px; height:320px; background:rgba(255,255,255,0.07); border-radius:50%; }
+        .hero::after  { content:''; position:absolute; bottom:-60px; left:-60px; width:260px; height:260px; background:rgba(255,255,255,0.05); border-radius:50%; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.18); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#fff; padding:6px 18px; border-radius:50px; font-size:0.76rem; font-weight:600; letter-spacing:0.5px; margin-bottom:28px; }
+        .dot { width:7px; height:7px; background:#fff; border-radius:50%; animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .hero h1 { font-size:3.2rem; font-weight:900; color:#fff; line-height:1.12; margin-bottom:18px; position:relative; z-index:1; }
+        .hero h1 span { background:linear-gradient(135deg,#fde68a,#fca5a5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .hero p { font-size:1.05rem; color:rgba(255,255,255,0.85); max-width:540px; margin:0 auto 44px; line-height:1.75; position:relative; z-index:1; }
+        .hero-features { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; position:relative; z-index:1; margin-bottom:40px; }
+        .hero-feat { background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.25); border-radius:14px; padding:18px 22px; text-align:center; min-width:140px; color:#fff; }
+        .hero-feat .icon { font-size:1.6rem; margin-bottom:8px; }
+        .hero-feat .label { font-size:0.78rem; font-weight:600; opacity:0.9; }
+        .hero-arrow { display:inline-flex; align-items:center; gap:8px; background:#fff; color:var(--purple); padding:13px 32px; border-radius:50px; font-weight:700; font-size:0.95rem; text-decoration:none; box-shadow:0 8px 28px rgba(0,0,0,0.15); transition:transform 0.2s,box-shadow 0.2s; position:relative; z-index:1; }
+        .hero-arrow:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(0,0,0,0.2); }
+        .how-strip { background:var(--white); border-bottom:1px solid var(--border); padding:40px 48px; }
+        .how-inner { max-width:1000px; margin:0 auto; text-align:center; }
+        .how-inner h2 { font-size:1.1rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:28px; }
+        .how-steps { display:flex; justify-content:center; gap:0; flex-wrap:wrap; }
+        .how-step { display:flex; align-items:center; gap:12px; padding:0 24px; }
+        .how-step:not(:last-child)::after { content:'->'; color:var(--border); font-size:1.2rem; margin-left:24px; }
+        .step-num { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem; color:#fff; flex-shrink:0; }
+        .how-step:nth-child(1) .step-num { background:var(--purple); }
+        .how-step:nth-child(2) .step-num { background:var(--blue); }
+        .how-step:nth-child(3) .step-num { background:var(--teal); }
+        .how-step:nth-child(4) .step-num { background:#ea580c; }
+        .how-step p { font-size:0.82rem; font-weight:600; color:var(--text); text-align:left; max-width:100px; line-height:1.4; }
+        .form-panel { max-width:900px; margin:0 auto; padding:52px 24px 80px; }
+        .panel-header { text-align:center; margin-bottom:40px; }
+        .panel-header .tag { display:inline-block; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--purple); background:var(--purple-light); padding:5px 14px; border-radius:20px; margin-bottom:14px; }
+        .panel-header h2 { font-size:1.8rem; font-weight:800; color:var(--text); margin-bottom:8px; }
+        .panel-header p { font-size:0.92rem; color:var(--muted); }
+        .form-section { background:var(--white); border:1px solid var(--border); border-radius:18px; padding:28px 28px 24px; margin-bottom:18px; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
+        .section-head { display:flex; align-items:center; gap:12px; margin-bottom:22px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+        .section-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+        .section-head h2 { font-size:0.98rem; font-weight:700; color:var(--text); }
+        .section-head p { font-size:0.76rem; color:var(--muted); margin-top:2px; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+        .form-group { display:flex; flex-direction:column; gap:6px; }
+        label { font-size:0.7rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+        input, select { padding:10px 13px; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; color:var(--text); font-size:0.88rem; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+        input:focus, select:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(124,58,237,0.1); background:var(--white); }
+        .dynamic-list { display:flex; flex-direction:column; gap:10px; }
+        .dynamic-row { display:flex; gap:10px; align-items:flex-end; background:var(--light); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; flex-wrap:wrap; }
+        .dynamic-row .form-group { flex:1; }
+        .btn-remove { background:var(--pink-light); border:1.5px solid #fbcfe8; color:var(--pink); border-radius:8px; width:32px; height:32px; cursor:pointer; font-size:0.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.2s; font-family:'Inter',sans-serif; }
+        .btn-remove:hover { background:#fce7f3; }
+        .btn-add { display:inline-flex; align-items:center; gap:8px; margin-top:10px; padding:8px 16px; background:var(--purple-light); border:1.5px dashed #c4b5fd; border-radius:9px; color:var(--purple); font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:background 0.2s; }
+        .btn-add:hover { background:#ddd6fe; }
+        .accent-purple .section-icon { background:var(--purple-light); }
+        .accent-blue   .section-icon { background:var(--blue-light); }
+        .accent-teal   .section-icon { background:var(--teal-light); }
+        .accent-purple .section-head h2 { color:var(--purple); }
+        .accent-blue   .section-head h2 { color:var(--blue); }
+        .accent-teal   .section-head h2 { color:var(--teal); }
+        .free-toggle-wrap { display:flex; flex-direction:column; gap:14px; }
+        .toggle-options { display:flex; gap:12px; flex-wrap:wrap; }
+        .toggle-card { flex:1; min-width:180px; border:2px solid var(--border); border-radius:12px; padding:16px 18px; cursor:pointer; transition:all 0.2s; background:var(--bg); display:flex; align-items:flex-start; gap:12px; }
+        .toggle-card:hover { border-color:var(--purple); background:var(--purple-light); }
+        .toggle-card input[type="radio"] { display:none; }
+        .toggle-card.selected { border-color:var(--purple); background:var(--purple-light); }
+        .toggle-card .card-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+        .toggle-card .card-text h4 { font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:3px; }
+        .toggle-card .card-text p { font-size:0.74rem; color:var(--muted); line-height:1.5; }
+        .toggle-card.selected .card-text h4 { color:var(--purple); }
+        .free-period-options { background:var(--purple-light); border:1.5px solid #c4b5fd; border-radius:12px; padding:18px; display:none; gap:14px; }
+        .free-period-options.visible { display:flex; flex-wrap:wrap; }
+        .btn-submit { padding:14px 52px; background:linear-gradient(135deg,var(--purple),var(--blue)); border:none; border-radius:50px; color:#fff; font-size:1rem; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; box-shadow:0 6px 24px rgba(124,58,237,0.3); transition:opacity 0.2s,transform 0.1s; }
+        .btn-submit:hover { opacity:0.92; transform:translateY(-1px); }
+        footer { background:var(--white); border-top:1px solid var(--border); color:var(--muted); text-align:center; padding:22px; font-size:0.78rem; }
+        footer span { color:var(--purple); font-weight:600; }
+        @media (max-width:640px) {
+            nav { padding:12px 18px; } .hero { padding:52px 20px 48px; } .hero h1 { font-size:2rem; }
+            .how-strip { padding:28px 20px; } .how-step:not(:last-child)::after { display:none; }
+            .form-panel { padding:32px 14px 60px; } .form-section { padding:20px 16px; }
+            .grid-2, .grid-3 { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-logo">&#128197; TimeTable</div>
+    <span class="nav-tag">Smart Schedule Generator</span>
+</nav>
+<section class="hero">
+    <div class="hero-badge"><span class="dot"></span> Free &middot; Instant &middot; Conflict-Free</div>
+    <h1>Build Your School<br><span>Timetable in Minutes</span></h1>
+    <p>Enter your classes, subjects, teachers, and timings. Get a complete, conflict-free timetable for every class automatically.</p>
+    <div class="hero-features">
+        <div class="hero-feat"><div class="icon">&#127891;</div><div class="label">Multiple Classes</div></div>
+        <div class="hero-feat"><div class="icon">&#128218;</div><div class="label">All Subjects</div></div>
+        <div class="hero-feat"><div class="icon">&#128105;&#8205;&#127979;</div><div class="label">Teacher Schedules</div></div>
+        <div class="hero-feat"><div class="icon">&#127374;</div><div class="label">Lunch Breaks</div></div>
+        <div class="hero-feat"><div class="icon">&#128424;</div><div class="label">PDF Export</div></div>
+    </div>
+    <a href="#form" class="hero-arrow">Start Building &rarr;</a>
+</section>
+<div class="how-strip">
+    <div class="how-inner">
+        <h2>How It Works</h2>
+        <div class="how-steps">
+            <div class="how-step"><div class="step-num">1</div><p>Enter school timings</p></div>
+            <div class="how-step"><div class="step-num">2</div><p>Add classes</p></div>
+            <div class="how-step"><div class="step-num">3</div><p>Add subjects &amp; teachers</p></div>
+            <div class="how-step"><div class="step-num">4</div><p>Get timetable instantly</p></div>
+        </div>
+    </div>
+</div>
+<div class="form-panel" id="form">
+    <div class="panel-header">
+        <div class="tag">Step-by-Step Setup</div>
+        <h2>Fill in Your Details</h2>
+        <p>Complete all sections below to generate your timetable</p>
+    </div>
+<form action="generate.php" method="POST">
+    <div class="form-section accent-purple">
+        <div class="section-head">
+            <div class="section-icon">&#127979;</div>
+            <div><h2>School / College Info</h2><p>Basic timing and period settings</p></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:14px;">
+            <div class="form-group" style="grid-column:1/-1;">
+                <label>School / College Name</label>
+                <input type="text" name="school_name" placeholder="e.g., Delhi Public School" required>
+            </div>
+        </div>
+        <div class="grid-3" style="margin-bottom:14px;">
+            <div class="form-group"><label>Start Time</label><input type="time" name="school_start" value="08:00" required></div>
+            <div class="form-group"><label>End Time</label><input type="time" name="school_end" value="14:00" required></div>
+            <div class="form-group"><label>Period Duration (mins)</label><input type="number" name="period_duration" value="45" min="20" max="120" required></div>
+        </div>
+        <div class="grid-3">
+            <div class="form-group"><label>Lunch Break Start</label><input type="time" name="lunch_start" value="11:00" required></div>
+            <div class="form-group"><label>Lunch Break End</label><input type="time" name="lunch_end" value="11:30" required></div>
+            <div class="form-group">
+                <label>Working Days / Week</label>
+                <select name="days_per_week">
+                    <option value="5" selected>5 Days (Mon-Fri)</option>
+                    <option value="6">6 Days (Mon-Sat)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-section accent-blue">
+        <div class="section-head">
+            <div class="section-icon">&#127891;</div>
+            <div><h2>Classes</h2><p>Add all classes that need a timetable</p></div>
+        </div>
+        <div class="dynamic-list" id="classList">
+            <div class="dynamic-row">
+                <div class="form-group">
+                    <label>Class Name</label>
+                    <input type="text" name="classes[]" placeholder="e.g., Class 10-A" required>
+                </div>
+                <button type="button" class="btn-remove" onclick="removeRow(this)">&#x2715;</button>
+            </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addRow('classList','classes[]','Class Name','e.g., Class 11-B')">+ Add Class</button>
+    </div>
+    <div class="form-section accent-teal">
+        <div class="section-head">
+            <div class="section-icon">&#128218;</div>
+            <div><h2>Subjects &amp; Teachers</h2><p>Add each subject with its teacher and lunch break</p></div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--teal);background:var(--teal-light);border-radius:8px;padding:8px 14px;margin-bottom:14px;font-weight:500;">
+            Periods per week are auto-calculated and distributed evenly across all subjects.
+        </p>
+        <div class="dynamic-list" id="subjectList">
+            <div class="dynamic-row">
+                <div class="form-group" style="min-width:140px;flex:2;">
+                    <label>Subject Name</label>
+                    <input type="text" name="subjects[]" placeholder="e.g., Mathematics" required>
+                </div>
+                <div class="form-group" style="min-width:140px;flex:2;">
+                    <label>Teacher Name</label>
+                    <input type="text" name="teachers[]" placeholder="e.g., Mr. Sharma" required>
+                </div>
+                <div class="form-group" style="min-width:100px;flex:1;">
+                    <label>Lunch Start</label>
+                    <input type="time" name="teacher_lunch_start[]" value="11:00" required>
+                </div>
+                <div class="form-group" style="min-width:100px;flex:1;">
+                    <label>Lunch End</label>
+                    <input type="time" name="teacher_lunch_end[]" value="11:30" required>
+                </div>
+                <button type="button" class="btn-remove" onclick="removeRow(this)">&#x2715;</button>
+            </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addSubjectRow()">+ Add Subject</button>
+    </div>
+    <div class="form-section" style="border-color:#c4b5fd;">
+        <div class="section-head">
+            <div class="section-icon" style="background:#ede9fe;">&#9208;</div>
+            <div><h2 style="color:var(--purple);">Free Periods</h2><p>Do you want free periods in the timetable?</p></div>
+        </div>
+        <div class="free-toggle-wrap">
+            <div class="toggle-options">
+                <label class="toggle-card selected" id="card-no" onclick="selectFree('no')">
+                    <input type="radio" name="allow_free" value="no" checked>
+                    <div class="card-icon">&#128683;</div>
+                    <div class="card-text"><h4>No Free Periods</h4><p>Fill every slot with a subject.</p></div>
+                </label>
+                <label class="toggle-card" id="card-yes" onclick="selectFree('yes')">
+                    <input type="radio" name="allow_free" value="yes">
+                    <div class="card-icon">&#9989;</div>
+                    <div class="card-text"><h4>Yes, Allow Free Periods</h4><p>Reserve some slots as free periods per day per class.</p></div>
+                </label>
+            </div>
+            <div class="free-period-options" id="freeOptions">
+                <div class="form-group" style="flex:1;min-width:180px;">
+                    <label>Free Periods Per Day (per class)</label>
+                    <select name="free_per_day">
+                        <option value="1">1 free period / day</option>
+                        <option value="2">2 free periods / day</option>
+                        <option value="3">3 free periods / day</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex:1;min-width:180px;">
+                    <label>Preferred Position</label>
+                    <select name="free_position">
+                        <option value="end">End of day (last slots)</option>
+                        <option value="start">Start of day (first slots)</option>
+                        <option value="spread">Spread across the day</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+        <button type="submit" class="btn-submit">&#10024; Generate Timetable &rarr;</button>
+    </div>
+</form>
+</div>
+<footer><p>&copy; 2025 <span>TimeTable Generator</span> &mdash; Smart School Schedule Builder</p></footer>
+<script>
+function selectFree(val) {
+    document.getElementById('card-no').classList.toggle('selected', val === 'no');
+    document.getElementById('card-yes').classList.toggle('selected', val === 'yes');
+    document.querySelector('input[value="' + val + '"]').checked = true;
+    document.getElementById('freeOptions').classList.toggle('visible', val === 'yes');
+}
+function removeRow(btn) {
+    var list = btn.closest('.dynamic-list');
+    if (list.querySelectorAll('.dynamic-row').length > 1) btn.closest('.dynamic-row').remove();
+}
+function addRow(listId, name, labelText, placeholder) {
+    var list = document.getElementById(listId);
+    var row = document.createElement('div');
+    row.className = 'dynamic-row';
+    row.innerHTML = '<div class="form-group"><label>' + labelText + '</label><input type="text" name="' + name + '" placeholder="' + placeholder + '" required></div><button type="button" class="btn-remove" onclick="removeRow(this)">&#x2715;</button>';
+    list.appendChild(row);
+}
+function addSubjectRow() {
+    var list = document.getElementById('subjectList');
+    var row = document.createElement('div');
+    row.className = 'dynamic-row';
+    row.innerHTML = '<div class="form-group" style="min-width:140px;flex:2;"><label>Subject Name</label><input type="text" name="subjects[]" placeholder="e.g., Science" required></div>' +
+        '<div class="form-group" style="min-width:140px;flex:2;"><label>Teacher Name</label><input type="text" name="teachers[]" placeholder="e.g., Ms. Priya" required></div>' +
+        '<div class="form-group" style="min-width:100px;flex:1;"><label>Lunch Start</label><input type="time" name="teacher_lunch_start[]" value="11:00" required></div>' +
+        '<div class="form-group" style="min-width:100px;flex:1;"><label>Lunch End</label><input type="time" name="teacher_lunch_end[]" value="11:30" required></div>' +
+        '<button type="button" class="btn-remove" onclick="removeRow(this)">&#x2715;</button>';
+    list.appendChild(row);
+}
+</script>
+</body>
+</html>
