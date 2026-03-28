@@ -3,302 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeTable Generator - Minimal & Iconized</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>TimeTable Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette from Image */
-            --color-primary: #52e5ff;    /* Cyan */
-            --color-secondary: #b1fffd;  /* Mint */
-            --color-light: #f4fdfc;      /* White-ish */
-            --color-accent: #ffb1bc;     /* Soft Pink */
-            --color-bg: #a68a8e;         /* Muted Mauve */
-            
-            --text-dark: #2d2d2d;
-            --text-light: #ffffff;
-            --border-color: rgba(0, 0, 0, 0.08);
+            --olive:#8aaa80;       --olive-light:#eef3ec;
+            --herb:#4a6741;        --herb-light:#dde8db;
+            --french-blue:#5a7ba8; --blue-light:#dde6f0;
+            --clementine:#c9694a;  --clementine-light:#f5e0d9;
+            --calendula:#f9be45;   --calendula-light:#fef6d9;
+            --sicilian:#b8ccdb;    --sicilian-light:#eaf1f6;
+            --terra:#a05c38;       --terra-light:#ecddd4;
+            --linen:#e8e3db;       --linen-dark:#c9c3bb;
+            --bg:#f5f2ee;
+            --white:#ffffff;
+            --border:#ddd8d0;
+            --text:#2c2a27;
+            --muted:#7a746c;
+            --light:#f0ece6;
         }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-bg);
-            color: var(--text-dark);
-            line-height: 1.6;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
-            background: var(--color-light);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
-        }
-
+        /* NAV */
         nav {
-            background: var(--color-primary);
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            background:var(--white);
+            border-bottom:1px solid var(--border);
+            padding:14px 48px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:sticky;
+            top:0;
+            z-index:100;
+            box-shadow:0 1px 8px rgba(0,0,0,0.05);
         }
-
         .nav-logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-family:'DM Serif Display',serif;
+            font-size:1.4rem;
+            color:var(--herb);
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .nav-logo svg { width:22px; height:22px; }
+        .nav-tag {
+            font-size:0.74rem;
+            font-weight:600;
+            color:var(--terra);
+            background:var(--terra-light);
+            padding:5px 14px;
+            border-radius:20px;
+            letter-spacing:0.3px;
         }
 
+        /* HERO */
         .hero {
-            padding: 50px 40px;
-            text-align: left;
-            background: var(--color-secondary);
-            border-bottom: 1px solid var(--border-color);
+            background:var(--herb);
+            padding:80px 48px 70px;
+            text-align:center;
+            position:relative;
+            overflow:hidden;
         }
+        .hero::before {
+            content:'';
+            position:absolute;
+            top:-80px; right:-80px;
+            width:340px; height:340px;
+            background:rgba(255,255,255,0.06);
+            border-radius:50%;
+        }
+        .hero::after {
+            content:'';
+            position:absolute;
+            bottom:-60px; left:-60px;
+            width:260px; height:260px;
+            background:rgba(255,255,255,0.04);
+            border-radius:50%;
+        }
+        .hero-badge {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background:rgba(255,255,255,0.15);
+            backdrop-filter:blur(8px);
+            border:1px solid rgba(255,255,255,0.25);
+            color:#fff;
+            padding:6px 18px;
+            border-radius:50px;
+            font-size:0.74rem;
+            font-weight:600;
+            letter-spacing:0.5px;
+            margin-bottom:28px;
+        }
+        .dot {
+            width:7px; height:7px;
+            background:var(--calendula);
+            border-radius:50%;
+            animation:pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .hero h1 {
+            font-family:'DM Serif Display',serif;
+            font-size:3.4rem;
+            font-weight:400;
+            color:#fff;
+            line-height:1.15;
+            margin-bottom:18px;
+            position:relative;
+            z-index:1;
+        }
+        .hero h1 span { color:var(--calendula); }
+        .hero p {
+            font-size:1.02rem;
+            color:rgba(255,255,255,0.8);
+            max-width:520px;
+            margin:0 auto 44px;
+            line-height:1.75;
+            position:relative;
+            z-index:1;
+        }
+        .hero-features {
+            display:flex;
+            justify-content:center;
+            gap:14px;
+            flex-wrap:wrap;
+            position:relative;
+            z-index:1;
+            margin-bottom:40px;
+        }
+        .hero-feat {
+            background:rgba(255,255,255,0.12);
+            backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.2);
+            border-radius:14px;
+            padding:16px 20px;
+            text-align:center;
+            min-width:130px;
+            color:#fff;
+        }
+        .hero-feat svg { width:28px; height:28px; margin-bottom:8px; opacity:0.9; }
+        .hero-feat .label { font-size:0.76rem; font-weight:600; opacity:0.9; display:block; }
+        .hero-arrow {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background:var(--calendula);
+            color:var(--text);
+            padding:13px 32px;
+            border-radius:50px;
+            font-weight:700;
+            font-size:0.95rem;
+            text-decoration:none;
+            box-shadow:0 8px 28px rgba(0,0,0,0.18);
+            transition:transform 0.2s,box-shadow 0.2s;
+            position:relative;
+            z-index:1;
+        }
+        .hero-arrow:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(0,0,0,0.22); }
+        .hero-arrow svg { width:16px; height:16px; }
 
-        .hero h1 { font-size: 2rem; margin-bottom: 8px; }
-        .hero p { color: #555; font-size: 0.95rem; }
+        /* HOW STRIP */
+        .how-strip {
+            background:var(--white);
+            border-bottom:1px solid var(--border);
+            padding:40px 48px;
+        }
+        .how-inner { max-width:1000px; margin:0 auto; text-align:center; }
+        .how-inner h2 {
+            font-size:0.72rem;
+            font-weight:700;
+            color:var(--muted);
+            text-transform:uppercase;
+            letter-spacing:2px;
+            margin-bottom:28px;
+        }
+        .how-steps { display:flex; justify-content:center; gap:0; flex-wrap:wrap; }
+        .how-step { display:flex; align-items:center; gap:12px; padding:0 24px; }
+        .how-step:not(:last-child)::after {
+            content:'';
+            display:block;
+            width:28px; height:1px;
+            background:var(--border);
+            margin-left:24px;
+            background-image:repeating-linear-gradient(90deg,var(--linen-dark) 0,var(--linen-dark) 4px,transparent 4px,transparent 8px);
+        }
+        .step-num {
+            width:36px; height:36px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            font-size:0.82rem;
+            color:#fff;
+            flex-shrink:0;
+        }
+        .how-step:nth-child(1) .step-num { background:var(--clementine); }
+        .how-step:nth-child(2) .step-num { background:var(--french-blue); }
+        .how-step:nth-child(3) .step-num { background:var(--olive); }
+        .how-step:nth-child(4) .step-num { background:var(--terra); }
+        .how-step p { font-size:0.82rem; font-weight:600; color:var(--text); text-align:left; max-width:100px; line-height:1.4; }
 
-        .form-panel { padding: 40px; }
+        /* FORM PANEL */
+        .form-panel { max-width:900px; margin:0 auto; padding:52px 24px 80px; }
+        .panel-header { text-align:center; margin-bottom:40px; }
+        .panel-header .tag {
+            display:inline-block;
+            font-size:0.7rem;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:1.5px;
+            color:var(--terra);
+            background:var(--terra-light);
+            padding:5px 14px;
+            border-radius:20px;
+            margin-bottom:14px;
+        }
+        .panel-header h2 { font-family:'DM Serif Display',serif; font-size:2rem; font-weight:400; color:var(--text); margin-bottom:8px; }
+        .panel-header p { font-size:0.9rem; color:var(--muted); }
 
+        /* FORM SECTIONS */
         .form-section {
-            margin-bottom: 40px;
+            background:var(--white);
+            border:1px solid var(--border);
+            border-radius:18px;
+            padding:28px 28px 24px;
+            margin-bottom:18px;
+            box-shadow:0 2px 12px rgba(0,0,0,0.04);
         }
-
         .section-head {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            color: var(--color-bg);
+            display:flex;
+            align-items:center;
+            gap:12px;
+            margin-bottom:22px;
+            padding-bottom:16px;
+            border-bottom:1px solid var(--border);
         }
-
-        .section-head h2 {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
+        .section-icon {
+            width:40px; height:40px;
+            border-radius:11px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-shrink:0;
         }
+        .section-icon svg { width:20px; height:20px; }
+        .section-head h2 { font-size:0.96rem; font-weight:700; color:var(--text); }
+        .section-head p { font-size:0.75rem; color:var(--muted); margin-top:2px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #888;
-            text-transform: uppercase;
-        }
-
+        .form-group { display:flex; flex-direction:column; gap:6px; }
+        label { font-size:0.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
         input, select {
-            padding: 12px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
+            padding:10px 13px;
+            background:var(--bg);
+            border:1.5px solid var(--border);
+            border-radius:9px;
+            color:var(--text);
+            font-size:0.88rem;
+            font-family:'DM Sans',sans-serif;
+            outline:none;
+            transition:border-color 0.2s,box-shadow 0.2s;
+        }
+        input:focus, select:focus {
+            border-color:var(--french-blue);
+            box-shadow:0 0 0 3px rgba(90,123,168,0.12);
+            background:var(--white);
         }
 
-        input:focus { border-color: var(--color-primary); }
-
+        .dynamic-list { display:flex; flex-direction:column; gap:10px; }
         .dynamic-row {
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-            margin-bottom: 12px;
-            padding: 12px;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            display:flex;
+            gap:10px;
+            align-items:flex-end;
+            background:var(--light);
+            border:1.5px solid var(--border);
+            border-radius:10px;
+            padding:12px 14px;
+            flex-wrap:wrap;
         }
-
-        .btn-add {
-            background: #fff;
-            border: 1.5px dashed var(--color-bg);
-            color: var(--color-bg);
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        .dynamic-row .form-group { flex:1; }
         .btn-remove {
-            background: var(--color-accent);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background:var(--clementine-light);
+            border:1.5px solid #e8c5bb;
+            color:var(--clementine);
+            border-radius:8px;
+            width:32px; height:32px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-shrink:0;
+            transition:background 0.2s;
+            font-family:'DM Sans',sans-serif;
         }
-
-        .btn-submit {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px;
-            background: var(--color-primary);
-            color: var(--text-dark);
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
+        .btn-remove svg { width:14px; height:14px; }
+        .btn-remove:hover { background:#f5d5cb; }
+        .btn-add {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-top:10px;
+            padding:8px 16px;
+            background:var(--olive-light);
+            border:1.5px dashed var(--olive);
+            border-radius:9px;
+            color:var(--herb);
+            font-size:0.8rem;
+            font-weight:600;
+            cursor:pointer;
+            font-family:'DM Sans',sans-serif;
+            transition:background 0.2s;
         }
+        .btn-add svg { width:14px; height:14px; }
+        .btn-add:hover { background:var(--herb-light); }
 
-        .toggle-options { display: flex; gap: 15px; }
+        /* ACCENT COLORS */
+        .accent-clementine .section-icon { background:var(--clementine-light); }
+        .accent-blue .section-icon       { background:var(--blue-light); }
+        .accent-olive .section-icon      { background:var(--olive-light); }
+        .accent-clementine .section-head h2 { color:var(--clementine); }
+        .accent-blue .section-head h2       { color:var(--french-blue); }
+        .accent-olive .section-head h2      { color:var(--herb); }
+
+        /* FREE PERIOD TOGGLE */
+        .free-toggle-wrap { display:flex; flex-direction:column; gap:14px; }
+        .toggle-options { display:flex; gap:12px; flex-wrap:wrap; }
         .toggle-card {
-            flex: 1;
-            padding: 20px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
+            flex:1;
+            min-width:180px;
+            border:2px solid var(--border);
+            border-radius:12px;
+            padding:16px 18px;
+            cursor:pointer;
+            transition:all 0.2s;
+            background:var(--bg);
+            display:flex;
+            align-items:flex-start;
+            gap:12px;
+        }
+        .toggle-card:hover { border-color:var(--french-blue); background:var(--blue-light); }
+        .toggle-card input[type="radio"] { display:none; }
+        .toggle-card.selected { border-color:var(--french-blue); background:var(--blue-light); }
+        .toggle-card .card-icon { flex-shrink:0; margin-top:2px; }
+        .toggle-card .card-icon svg { width:24px; height:24px; }
+        .toggle-card .card-text h4 { font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:3px; }
+        .toggle-card .card-text p { font-size:0.74rem; color:var(--muted); line-height:1.5; }
+        .toggle-card.selected .card-text h4 { color:var(--french-blue); }
+        .free-period-options {
+            background:var(--blue-light);
+            border:1.5px solid var(--sicilian);
+            border-radius:12px;
+            padding:18px;
+            display:none;
+            gap:14px;
+        }
+        .free-period-options.visible { display:flex; flex-wrap:wrap; }
+
+        /* SUBMIT */
+        .btn-submit {
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding:14px 52px;
+            background:var(--herb);
+            border:none;
+            border-radius:50px;
+            color:#fff;
+            font-size:0.98rem;
+            font-weight:700;
+            font-family:'DM Sans',sans-serif;
+            cursor:pointer;
+            box-shadow:0 6px 24px rgba(74,103,65,0.28);
+            transition:background 0.2s,transform 0.1s;
+        }
+        .btn-submit:hover { background:#3d5735; transform:translateY(-1px); }
+        .btn-submit svg { width:18px; height:18px; }
+
+        /* TEAL INFO STRIP */
+        .info-strip {
+            font-size:0.78rem;
+            color:var(--herb);
+            background:var(--olive-light);
+            border-radius:8px;
+            padding:9px 14px;
+            margin-bottom:14px;
+            font-weight:500;
+            border-left:3px solid var(--olive);
         }
 
-        .toggle-card.selected {
-            border-color: var(--color-primary);
-            background: var(--color-secondary);
+        /* FOOTER */
+        footer {
+            background:var(--white);
+            border-top:1px solid var(--border);
+            color:var(--muted);
+            text-align:center;
+            padding:22px;
+            font-size:0.78rem;
         }
+        footer span { color:var(--herb); font-weight:600; }
 
-        .toggle-card input { display: none; }
-
-        footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.75rem; opacity: 0.8; }
-
-        svg { flex-shrink: 0; }
+        @media (max-width:640px) {
+            nav { padding:12px 18px; }
+            .hero { padding:52px 20px 48px; }
+            .hero h1 { font-size:2.2rem; }
+            .how-strip { padding:28px 20px; }
+            .how-step:not(:last-child)::after { display:none; }
+            .form-panel { padding:32px 14px 60px; }
+            .form-section { padding:20px 16px; }
+            .grid-2, .grid-3 { grid-template-columns:1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <nav>
-            <div class="nav-logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                TimeTable AI
-            </div>
-        </nav>
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        TimeTable
+    </div>
+    <span class="nav-tag">Smart Schedule Generator</span>
+</nav>
 
-        <section class="hero">
-            <h1>Create Your Schedule</h1>
-            <p>Enter your institutional data to generate an optimized, conflict-free timetable.</p>
-        </section>
-
-        <div class="form-panel">
-            <form action="generate.php" method="POST">
-                
-                <div class="form-section">
-                    <div class="section-head">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                        <h2>Institution</h2>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>School Name</label>
-                        <input type="text" name="school_name" placeholder="e.g. Westside Academy" required>
-                    </div>
-                    <div class="grid">
-                        <div class="form-group"><label>Start</label><input type="time" name="school_start" value="08:00"></div>
-                        <div class="form-group"><label>End</label><input type="time" name="school_end" value="15:00"></div>
-                        <div class="form-group"><label>Period (min)</label><input type="number" name="period_duration" value="45"></div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="section-head">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <h2>Classes</h2>
-                    </div>
-                    <div id="classList">
-                        <div class="dynamic-row">
-                            <div class="form-group" style="flex:1;"><label>Class ID</label><input type="text" name="classes[]" placeholder="10-B"></div>
-                            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-add" onclick="addRow('classList')">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Add Class
-                    </button>
-                </div>
-
-                <div class="form-section">
-                    <div class="section-head">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                        <h2>Subjects</h2>
-                    </div>
-                    <div id="subjectList">
-                        <div class="dynamic-row">
-                            <div class="form-group" style="flex:1;"><label>Subject</label><input type="text" name="subjects[]" placeholder="Physics"></div>
-                            <div class="form-group" style="flex:1;"><label>Teacher</label><input type="text" name="teachers[]" placeholder="Dr. Ray"></div>
-                            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-add" onclick="addSubjectRow()">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Add Subject
-                    </button>
-                </div>
-
-                <button type="submit" class="btn-submit">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                    Generate Timetable
-                </button>
-            </form>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">
+        <span class="dot"></span> Free &middot; Instant &middot; Conflict-Free
+    </div>
+    <h1>Build Your School<br><span>Timetable in Minutes</span></h1>
+    <p>Enter your classes, subjects, teachers, and timings. Get a complete, conflict-free timetable for every class automatically.</p>
+    <div class="hero-features">
+        <div class="hero-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <span class="label">Multiple Classes</span>
+        </div>
+        <div class="hero-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <span class="label">All Subjects</span>
+        </div>
+        <div class="hero-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span class="label">Teacher Schedules</span>
+        </div>
+        <div class="hero-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span class="label">Lunch Breaks</span>
+        </div>
+        <div class="hero-feat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span class="label">PDF Export</span>
         </div>
     </div>
+    <a href="#form" class="hero-arrow">
+        Start Building
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+    </a>
+</section>
 
-    <footer>
-        &copy; 2026 TimeTable AI — Minimal Neural Engine
-    </footer>
+<!-- HOW IT WORKS -->
+<div class="how-strip">
+    <div class="how-inner">
+        <h2>How It Works</h2>
+        <div class="how-steps">
+            <div class="how-step"><div class="step-num">1</div><p>Enter school timings</p></div>
+            <div class="how-step"><div class="step-num">2</div><p>Add classes</p></div>
+            <div class="how-step"><div class="step-num">3</div><p>Add subjects &amp; teachers</p></div>
+            <div class="how-step"><div class="step-num">4</div><p>Get timetable instantly</p></div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        function addRow(id) {
-            const container = document.getElementById(id);
-            const row = document.createElement('div');
-            row.className = 'dynamic-row';
-            row.innerHTML = `<div class="form-group" style="flex:1;"><label>Class ID</label><input type="text" name="classes[]" required></div>
-                             <button type="button" class="btn-remove" onclick="this.parentElement.remove()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>`;
-            container.appendChild(row);
-        }
+<!-- FORM -->
+<div class="form-panel" id="form">
+    <div class="panel-header">
+        <div class="tag">Step-by-Step Setup</div>
+        <h2>Fill in Your Details</h2>
+        <p>Complete all sections below to generate your timetable</p>
+    </div>
 
-        function addSubjectRow() {
-            const container = document.getElementById('subjectList');
-            const row = document.createElement('div');
-            row.className = 'dynamic-row';
-            row.innerHTML = `<div class="form-group" style="flex:1;"><label>Subject</label><input type="text" name="subjects[]" required></div>
-                             <div class="form-group" style="flex:1;"><label>Teacher</label><input type="text" name="teachers[]" required></div>
-                             <button type="button" class="btn-remove" onclick="this.parentElement.remove()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>`;
-            container.appendChild(row);
-        }
-    </script>
+    <form action="generate.php" method="POST">
+
+        <!-- SCHOOL INFO -->
+        <div class="form-section accent-clementine">
+            <div class="section-head">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--clementine)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <div><h2>School / College Info</h2><p>Basic timing and period settings</p></div>
+            </div>
+            <div class="grid-2" style="margin-bottom:14px;">
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>School / College Name</label>
+                    <input type="text" name="school_name" placeholder="e.g., Delhi Public School" required>
+                </div>
+            </div>
+            <div class="grid-3" style="margin-bottom:14px;">
+                <div class="form-group"><label>Start Time</label><input type="time" name="school_start" value="08:00" required></div>
+                <div class="form-group"><label>End Time</label><input type="time" name="school_end" value="14:00" required></div>
+                <div class="form-group"><label>Period Duration (mins)</label><input type="number" name="period_duration" value="45" min="20" max="120" required></div>
+            </div>
+            <div class="grid-3">
+                <div class="form-group"><label>Lunch Break Start</label><input type="time" name="lunch_start" value="11:00" required></div>
+                <div class="form-group"><label>Lunch Break End</label><input type="time" name="lunch_end" value="11:30" required></div>
+                <div class="form-group">
+                    <label>Working Days / Week</label>
+                    <select name="days_per_week">
+                        <option value="5" selected>5 Days (Mon–Fri)</option>
+                        <option value="6">6 Days (Mon–Sat)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLASSES -->
+        <div class="form-section accent-blue">
+            <div class="section-head">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--french-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </div>
+                <div><h2>Classes</h2><p>Add all classes that need a timetable</p></div>
+            </div>
+            <div class="dynamic-list" id="classList">
+                <div class="dynamic-row">
+                    <div class="form-group">
+                        <label>Class Name</label>
+                        <input type="text" name="classes[]" placeholder="e.g., Class 10-A" required>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="removeRow(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addRow('classList','classes[]','Class Name','e.g., Class 11-B')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Class
+            </button>
+        </div>
+
+        <!-- SUBJECTS & TEACHERS -->
+        <div class="form-section accent-olive">
+            <div class="section-head">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--herb)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                </div>
+                <div><h2>Subjects &amp; Teachers</h2><p>Add each subject with its teacher and lunch break</p></div>
+            </div>
+            <div class="info-strip">
+                Periods per week are auto-calculated and distributed evenly across all subjects.
+            </div>
+            <div class="dynamic-list" id="subjectList">
+                <div class="dynamic-row">
+                    <div class="form-group" style="min-width:140px;flex:2;">
+                        <label>Subject Name</label>
+                        <input type="text" name="subjects[]" placeholder="e.g., Mathematics" required>
+                    </div>
+                    <div class="form-group" style="min-width:140px;flex:2;">
+                        <label>Teacher Name</label>
+                        <input type="text" name="teachers[]" placeholder="e.g., Mr. Sharma" required>
+                    </div>
+                    <div class="form-group" style="min-width:100px;flex:1;">
+                        <label>Lunch Start</label>
+                        <input type="time" name="teacher_lunch_start[]" value="11:00" required>
+                    </div>
+                    <div class="form-group" style="min-width:100px;flex:1;">
+                        <label>Lunch End</label>
+                        <input type="time" name="teacher_lunch_end[]" value="11:30" required>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="removeRow(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addSubjectRow()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Subject
+            </button>
+        </div>
+
+        <!-- FREE PERIODS -->
+        <div class="form-section" style="border-color:var(--sicilian);">
+            <div class="section-head">
+                <div class="section-icon" style="background:var(--sicilian-light);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--french-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div><h2 style="color:var(--french-blue);">Free Periods</h2><p>Do you want free periods in the timetable?</p></div>
+            </div>
+            <div class="free-toggle-wrap">
+                <div class="toggle-options">
+                    <label class="toggle-card selected" id="card-no" onclick="selectFree('no')">
+                        <input type="radio" name="allow_free" value="no" checked>
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--clementine)" stroke-width="2" stroke-linecap="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h4>No Free Periods</h4>
+                            <p>Fill every slot with a subject.</p>
+                        </div>
+                    </label>
+                    <label class="toggle-card" id="card-yes" onclick="selectFree('yes')">
+                        <input type="radio" name="allow_free" value="yes">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--herb)" stroke-width="2" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h4>Yes, Allow Free Periods</h4>
+                            <p>Reserve some slots as free periods per day per class.</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="free-period-options" id="freeOptions">
+                    <div class="form-group" style="flex:1;min-width:180px;">
+                        <label>Free Periods Per Day (per class)</label>
+                        <select name="free_per_day">
+                            <option value="1">1 free period / day</option>
+                            <option value="2">2 free periods / day</option>
+                            <option value="3">3 free periods / day</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex:1;min-width:180px;">
+                        <label>Preferred Position</label>
+                        <select name="free_position">
+                            <option value="end">End of day (last slots)</option>
+                            <option value="start">Start of day (first slots)</option>
+                            <option value="spread">Spread across the day</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:10px;">
+            <button type="submit" class="btn-submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 11 12 14 22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                Generate Timetable
+            </button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2025 <span>TimeTable Generator</span> &mdash; Smart School Schedule Builder</p>
+</footer>
+
+<script>
+function selectFree(val) {
+    document.getElementById('card-no').classList.toggle('selected', val === 'no');
+    document.getElementById('card-yes').classList.toggle('selected', val === 'yes');
+    document.querySelector('input[value="' + val + '"]').checked = true;
+    document.getElementById('freeOptions').classList.toggle('visible', val === 'yes');
+}
+function removeRow(btn) {
+    var list = btn.closest('.dynamic-list');
+    if (list.querySelectorAll('.dynamic-row').length > 1) btn.closest('.dynamic-row').remove();
+}
+var removeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+function addRow(listId, name, labelText, placeholder) {
+    var list = document.getElementById(listId);
+    var row = document.createElement('div');
+    row.className = 'dynamic-row';
+    row.innerHTML = '<div class="form-group"><label>' + labelText + '</label><input type="text" name="' + name + '" placeholder="' + placeholder + '" required></div><button type="button" class="btn-remove" onclick="removeRow(this)">' + removeIcon + '</button>';
+    list.appendChild(row);
+}
+function addSubjectRow() {
+    var list = document.getElementById('subjectList');
+    var row = document.createElement('div');
+    row.className = 'dynamic-row';
+    row.innerHTML =
+        '<div class="form-group" style="min-width:140px;flex:2;"><label>Subject Name</label><input type="text" name="subjects[]" placeholder="e.g., Science" required></div>' +
+        '<div class="form-group" style="min-width:140px;flex:2;"><label>Teacher Name</label><input type="text" name="teachers[]" placeholder="e.g., Ms. Priya" required></div>' +
+        '<div class="form-group" style="min-width:100px;flex:1;"><label>Lunch Start</label><input type="time" name="teacher_lunch_start[]" value="11:00" required></div>' +
+        '<div class="form-group" style="min-width:100px;flex:1;"><label>Lunch End</label><input type="time" name="teacher_lunch_end[]" value="11:30" required></div>' +
+        '<button type="button" class="btn-remove" onclick="removeRow(this)">' + removeIcon + '</button>';
+    list.appendChild(row);
+}
+</script>
 </body>
 </html>
