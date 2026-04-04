@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "timetable/generate.php": {
+    "api/generate.php": {
       "runtime": "vercel-php@0.7.4"
     }
   },
@@ -12,11 +12,7 @@
     },
     {
       "src": "^/generate\\.php$",
-      "dest": "/timetable/generate.php"
-    },
-    {
-      "src": "^/timetable/(.*)$",
-      "dest": "/timetable/$1"
+      "dest": "/api/generate.php"
     }
   ]
 }
