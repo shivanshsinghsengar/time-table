@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeTable Generator — Project Presentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .deck {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            padding: 60px 80px;
+            position: absolute;
+            top: 0; left: 0;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* SLIDE 1 — TITLE */
+        .slide-1 {
+            background: linear-gradient(135deg, #1e3a5f 0%, #4f46e5 60%, #0f766e 100%);
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-1 .badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            color: #a5f3fc;
+        }
+
+        .slide-1 h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .slide-1 h1 span { color: #fbbf24; }
+
+        .slide-1 p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.75);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .slide-1 .tags {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tag-pill {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* SLIDE 2 — PROBLEM */
+        .slide-2 { background: #0f172a; }
+
+        /* SLIDE 3 — TECH STACK */
+        .slide-3 { background: #0f172a; }
+
+        /* SLIDE 4 — FEATURES */
+        .slide-4 { background: #0f172a; }
+
+        /* SLIDE 5 — HOW IT WORKS */
+        .slide-5 { background: #0f172a; }
+
+        /* SLIDE 6 — ALGORITHM */
+        .slide-6 { background: #0f172a; }
+
+        /* SLIDE 7 — DATABASE */
+        .slide-7 { background: #0f172a; }
+
+        /* SLIDE 8 — DEMO */
+        .slide-8 {
+            background: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
+            align-items: center;
+            text-align: center;
+        }
+
+        /* SLIDE 9 — THANK YOU */
+        .slide-9 {
+            background: linear-gradient(135deg, #1e3a5f 0%, #4f46e5 60%, #0f766e 100%);
+            align-items: center;
+            text-align: center;
+        }
+
+        /* COMMON */
+        .slide-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #60a5fa;
+            margin-bottom: 16px;
+        }
+
+        .slide h2 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            line-height: 1.15;
+        }
+
+        .slide h2 span { color: #fbbf24; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+        }
+
+        .card p {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.6;
+        }
+
+        .highlight-card {
+            background: rgba(79,70,229,0.2);
+            border-color: rgba(79,70,229,0.5);
+        }
+
+        .problem-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 700px;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 18px 22px;
+        }
+
+        .problem-item .num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .problem-item p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+            padding-top: 4px;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 30px 24px;
+            text-align: center;
+        }
+
+        .tech-card .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 14px;
+        }
+
+        .tech-card h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .tech-card p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+        }
+
+        .tech-card.php { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); }
+        .tech-card.mysql { border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.08); }
+        .tech-card.html { border-color: rgba(249,115,22,0.5); background: rgba(249,115,22,0.08); }
+        .tech-card.css { border-color: rgba(20,184,166,0.5); background: rgba(20,184,166,0.08); }
+
+        .step-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .step-box {
+            background: rgba(79,70,229,0.15);
+            border: 1.5px solid rgba(79,70,229,0.4);
+            border-radius: 12px;
+            padding: 18px 22px;
+            text-align: center;
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .step-box .snum {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #818cf8;
+            margin-bottom: 6px;
+        }
+
+        .step-box p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.4;
+        }
+
+        .arrow {
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.3);
+            padding: 0 8px;
+        }
+
+        .algo-block {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .algo-block .kw { color: #818cf8; }
+        .algo-block .fn { color: #34d399; }
+        .algo-block .cm { color: #475569; }
+        .algo-block .str { color: #fbbf24; }
+
+        .db-table {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .db-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        .db-table thead th {
+            background: #4f46e5;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .db-table tbody td {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .db-table tbody tr:last-child td { border-bottom: none; }
+        .db-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+
+        .demo-url {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fbbf24;
+            background: rgba(0,0,0,0.3);
+            padding: 16px 40px;
+            border-radius: 12px;
+            margin: 24px 0;
+            letter-spacing: 1px;
+        }
+
+        /* NAV */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            padding: 10px 24px;
+            z-index: 100;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav button:hover { background: rgba(255,255,255,0.15); }
+        .nav button:disabled { opacity: 0.3; cursor: default; }
+
+        .nav .counter {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .nav .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav .dot.on { background: #fff; }
+
+        .slide-num {
+            position: fixed;
+            top: 24px;
+            right: 36px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="deck">
+
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide slide-1 active">
+        <div class="badge">📅 Minor Project Presentation</div>
+        <h1>School <span>TimeTable</span><br>Generator</h1>
+        <p>An automated, conflict-free timetable builder for schools and colleges — built with PHP, MySQL, HTML &amp; CSS.</p>
+        <div class="tags">
+            <span class="tag-pill">🐘 PHP</span>
+            <span class="tag-pill">🗄️ MySQL</span>
+            <span class="tag-pill">🌐 HTML</span>
+            <span class="tag-pill">🎨 CSS</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: PROBLEM -->
+    <div class="slide slide-2">
+        <div class="slide-label">The Problem</div>
+        <h2>Why does this <span>project exist?</span></h2>
+        <div class="problem-list">
+            <div class="problem-item">
+                <div class="num">1</div>
+                <p>Making school timetables manually takes hours and is highly error-prone — teachers get double-booked, periods overlap, lunch breaks are missed.</p>
+            </div>
+            <div class="problem-item">
+                <div class="num">2</div>
+                <p>When a school has multiple sections (10-A, 10-B, 10-C), each needs a separate timetable — multiplying the effort significantly.</p>
+            </div>
+            <div class="problem-item">
+                <div class="num">3</div>
+                <p>Different sections sometimes need different teachers for the same subject — managing this manually leads to constant confusion.</p>
+            </div>
+            <div class="problem-item">
+                <div class="num">4</div>
+                <p>There is no free, simple, web-based tool that solves all of this in one place without requiring any installation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: TECH STACK -->
+    <div class="slide slide-3">
+        <div class="slide-label">Tech Stack</div>
+        <h2>Built with <span>4 technologies</span></h2>
+        <div class="grid-2" style="max-width: 800px;">
+            <div class="tech-card php">
+                <div class="tech-icon">🐘</div>
+                <h3>PHP</h3>
+                <p>Server-side logic — handles form input, runs the scheduling algorithm, and renders the output HTML dynamically.</p>
+            </div>
+            <div class="tech-card mysql">
+                <div class="tech-icon">🗄️</div>
+                <h3>MySQL</h3>
+                <p>Relational database schema designed to store sessions, classes, subjects, teachers, and generated timetable entries.</p>
+            </div>
+            <div class="tech-card html">
+                <div class="tech-icon">🌐</div>
+                <h3>HTML</h3>
+                <p>Semantic markup for the input form and the generated timetable output — structured for print and PDF export.</p>
+            </div>
+            <div class="tech-card css">
+                <div class="tech-icon">🎨</div>
+                <h3>CSS</h3>
+                <p>Fully custom styling — responsive layout, animated countdown, print-ready timetable grid, no external CSS framework used.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: FEATURES -->
+    <div class="slide slide-4">
+        <div class="slide-label">Features</div>
+        <h2>What it <span>can do</span></h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="icon">🏫</div>
+                <h3>Multiple Classes &amp; Sections</h3>
+                <p>Add any number of class groups (Class 10, 11, 12) each with multiple sections (A, B, C).</p>
+            </div>
+            <div class="card">
+                <div class="icon">📚</div>
+                <h3>Auto Period Distribution</h3>
+                <p>Periods per week are calculated and distributed evenly across all subjects automatically.</p>
+            </div>
+            <div class="card highlight-card">
+                <div class="icon">👨‍🏫</div>
+                <h3>Teacher Override per Section</h3>
+                <p>Each section can have a different teacher for any subject — only fill in what's different.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🚫</div>
+                <h3>No Double Booking</h3>
+                <p>A teacher cannot be assigned to two classes at the same time slot on the same day.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🍽️</div>
+                <h3>Lunch Break Aware</h3>
+                <p>Teacher lunch times are respected — no class is assigned during a teacher's break.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🖨️</div>
+                <h3>Print / PDF Export</h3>
+                <p>Every timetable is print-ready with a signature footer for Class Teacher and Incharge.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: HOW IT WORKS -->
+    <div class="slide slide-5">
+        <div class="slide-label">Workflow</div>
+        <h2>How it <span>works</span></h2>
+        <div class="step-flow">
+            <div class="step-box">
+                <div class="snum">1</div>
+                <p>User fills the form — school info, classes, subjects, teachers</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-box">
+                <div class="snum">2</div>
+                <p>PHP receives POST data and builds time slots using school timings</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-box">
+                <div class="snum">3</div>
+                <p>Greedy algorithm assigns subjects to slots per class per day</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-box">
+                <div class="snum">4</div>
+                <p>PHP renders the timetable as HTML — one tab per section</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-box">
+                <div class="snum">5</div>
+                <p>User views, switches tabs, and prints or exports as PDF</p>
+            </div>
+        </div>
+        <div style="margin-top: 32px; display: flex; gap: 16px;">
+            <div class="card" style="flex: 1;">
+                <h3>buildSlots()</h3>
+                <p>Converts school start/end time into an ordered array of period slots, inserting the lunch break at the correct position.</p>
+            </div>
+            <div class="card" style="flex: 1;">
+                <h3>generateTimetable()</h3>
+                <p>Loops over days → classes → slots. Picks the best candidate subject using a quota-based greedy approach.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: ALGORITHM -->
+    <div class="slide slide-6">
+        <div class="slide-label">Core Logic</div>
+        <h2>The <span>Scheduling Algorithm</span></h2>
+        <div class="algo-block">
+            <span class="cm">// For each day → each class → each time slot:</span><br>
+            <span class="kw">foreach</span> ($days <span class="kw">as</span> $day) {<br>
+            &nbsp;&nbsp;<span class="kw">foreach</span> ($classes <span class="kw">as</span> $class) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span> ($slots <span class="kw">as</span> $slot) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Find valid candidates (subject not used today, quota > 0,</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// teacher not on lunch, teacher not already booked this slot)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cands = <span class="fn">findCandidates</span>($subjects, $booked, $slot);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Pick subject with highest remaining quota (greedy)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">usort</span>($cands, <span class="kw">fn</span>($a,$b) => $b[<span class="str">'quota'</span>] - $a[<span class="str">'quota'</span>]);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$quota[$class][$subject]--; &nbsp;<span class="cm">// decrement</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$booked[$day][$slot][$teacher] = <span class="kw">true</span>;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+            &nbsp;&nbsp;}<br>
+            }
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 20px;">
+            <div class="card" style="flex: 1;">
+                <h3>Conflict Prevention</h3>
+                <p>$booked[day][slot][teacher] = true ensures no teacher is assigned twice in the same slot across different classes.</p>
+            </div>
+            <div class="card" style="flex: 1;">
+                <h3>Graceful Fallback</h3>
+                <p>If no valid candidate exists for a slot, it automatically becomes a Free Period instead of crashing.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: DATABASE -->
+    <div class="slide slide-7">
+        <div class="slide-label">Database</div>
+        <h2>MySQL <span>Schema</span></h2>
+        <div class="grid-2">
+            <div>
+                <div class="db-table" style="margin-bottom: 16px;">
+                    <table>
+                        <thead><tr><th colspan="2">tt_sessions</th></tr></thead>
+                        <tbody>
+                            <tr><td>id, school_name</td><td>school_start, school_end</td></tr>
+                            <tr><td>period_duration</td><td>lunch_start, lunch_end</td></tr>
+                            <tr><td>days_per_week</td><td>created_at</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="db-table">
+                    <table>
+                        <thead><tr><th colspan="2">tt_subjects</th></tr></thead>
+                        <tbody>
+                            <tr><td>id, session_id</td><td>subject_name</td></tr>
+                            <tr><td>periods_per_week</td><td>FK → tt_sessions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div class="db-table" style="margin-bottom: 16px;">
+                    <table>
+                        <thead><tr><th colspan="2">tt_teachers</th></tr></thead>
+                        <tbody>
+                            <tr><td>id, session_id</td><td>teacher_name</td></tr>
+                            <tr><td>subject_id</td><td>lunch_start, lunch_end</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="db-table">
+                    <table>
+                        <thead><tr><th colspan="2">tt_timetable</th></tr></thead>
+                        <tbody>
+                            <tr><td>session_id, class_id</td><td>day, period_number</td></tr>
+                            <tr><td>subject_id, teacher_id</td><td>period_start, period_end</td></tr>
+                            <tr><td>is_lunch</td><td>is_free</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 18px; font-size: 0.78rem; color: rgba(255,255,255,0.4);">All tables use ON DELETE CASCADE / SET NULL foreign keys for referential integrity.</p>
+    </div>
+
+    <!-- SLIDE 8: DEMO -->
+    <div class="slide slide-8">
+        <div class="slide-label" style="color: #a5f3fc;">Live Demo</div>
+        <h2 style="font-size: 2.8rem;">See it in action</h2>
+        <div class="demo-url">🔗 time-table-pearl.vercel.app</div>
+        <p style="font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 500px; line-height: 1.7;">
+            Deployed on Vercel using the vercel-php runtime.<br>
+            No database required for generation — runs fully in-memory.
+        </p>
+    </div>
+
+    <!-- SLIDE 9: THANK YOU -->
+    <div class="slide slide-9">
+        <div class="badge" style="margin-bottom: 32px;">📅 TimeTable Generator</div>
+        <h1 style="font-size: 4rem; font-weight: 900; margin-bottom: 20px;">Thank You</h1>
+        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 500px; line-height: 1.7; margin-bottom: 40px;">
+            Built with PHP · MySQL · HTML · CSS<br>
+            Deployed on Vercel · Open for questions
+        </p>
+        <div class="tags">
+            <span class="tag-pill">🐘 PHP Logic</span>
+            <span class="tag-pill">🗄️ MySQL Schema</span>
+            <span class="tag-pill">🌐 HTML Output</span>
+            <span class="tag-pill">🎨 CSS Styling</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="slide-num" id="slideNum">1 / 9</div>
+
+<div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>&#8592;</button>
+    <div class="dots" id="dots"></div>
+    <span class="counter" id="counter">1 / 9</span>
+    <button id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+</div>
+
+<script>
+var current = 0;
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var dotsEl = document.getElementById('dots');
+
+for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' on' : '');
+    d.setAttribute('data-i', i);
+    d.onclick = function() { goTo(parseInt(this.getAttribute('data-i'))); };
+    dotsEl.appendChild(d);
+}
+
+function goTo(n) {
+    slides[current].classList.remove('active');
+    document.querySelectorAll('.dot')[current].classList.remove('on');
+    current = n;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('on');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+}
+
+function changeSlide(dir) {
+    var next = current + dir;
+    if (next >= 0 && next < total) goTo(next);
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+});
+</script>
+</body>
+</html>
