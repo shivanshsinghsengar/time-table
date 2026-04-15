@@ -145,13 +145,17 @@ function generateTimetable(array $classes,array $subjects,array $teachers,array 
                     if(in_array($si,$used))continue; if($quota[$ci][$si]<=0)continue;
                     $ti=$map[$si]??null; if($ti===null)continue;
                     if(teacherOnLunch($pool[$ti],$slot))continue;
-                    if(!empty($booked[$day][$sIdx][$ci.'_'.$ti]))continue;
-                    $cands[]=['si'=>$si,'ti'=>$ti,'quota'=>$quota[$ci][$si]];
+                    $teacherKey = strtolower(trim($pool[$ti]['name']));
+                    if(!empty($booked[$day][$sIdx][$teacherKey]))continue;
+                    $cands[]=['si'=>$si,'ti'=>$ti,'quota'=>$quota[$ci][$si],'tkey'=>$teacherKey];
                 }
                 if(!empty($cands)){
                     usort($cands,fn($a,$b)=>$b['quota']-$a['quota']);$p=$cands[0];
-                    $quota[$ci][$p['si']]--;$booked[$day][$sIdx][$ci.'_'.$p['ti']]=true;$used[]=$p['si'];
-                    $tt[$ci][$day][$sIdx]=['subject'=>$subjects[$p['si']]['name'],'teacher'=>$pool[$p['ti']]['name'],'start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>false];
+                    $quota[$ci][$p['si']]--;
+                    $teacherName = $pool[$p['ti']]['name'];
+                    $booked[$day][$sIdx][$p['tkey']]=true;
+                    $used[]=$p['si'];
+                    $tt[$ci][$day][$sIdx]=['subject'=>$subjects[$p['si']]['name'],'teacher'=>$teacherName,'start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>false];
                 }else{
                     $tt[$ci][$day][$sIdx]=['subject'=>'FREE PERIOD','teacher'=>'','start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>true];
                 }
