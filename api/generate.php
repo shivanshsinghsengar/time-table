@@ -26,7 +26,7 @@ $overrideLunchStart  = $_POST['override_lunch_start']  ?? [];
 $overrideLunchEnd    = $_POST['override_lunch_end']    ?? [];
 
 $classNames = [];
-$classOverrides = []; // classNames index => [subjectIdx => ['teacher'=>'','lunch_start'=>'','lunch_end'=>'']]
+$classOverrides = [];
 
 foreach ($classGroups as $gIdx => $groupName) {
     $groupName = trim($groupName);
@@ -51,6 +51,12 @@ foreach ($classGroups as $gIdx => $groupName) {
         }
         $classOverrides[$ci] = $overrides;
     }
+}
+
+// fallback: support old classes[] input if no groups submitted
+if (empty($classNames)) {
+    $classNames = array_values(array_filter(array_map('trim', $_POST['classes'] ?? [])));
+    $classOverrides = [];
 }
 
 if (empty($classNames) || empty($subjectNames) || empty($teacherNames))

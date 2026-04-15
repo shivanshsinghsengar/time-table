@@ -698,6 +698,9 @@
 </footer>
 
 <script>
+var removeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+var groupCount = 0;
+
 function selectFree(val) {
     document.getElementById('card-no').classList.toggle('selected', val === 'no');
     document.getElementById('card-yes').classList.toggle('selected', val === 'yes');
@@ -707,6 +710,53 @@ function selectFree(val) {
 function removeRow(btn) {
     var list = btn.closest('.dynamic-list');
     if (list.querySelectorAll('.dynamic-row').length > 1) btn.closest('.dynamic-row').remove();
+}
+function removeSection(btn) {
+    var body = btn.closest('.class-group-body');
+    if (body.querySelectorAll('.section-row').length > 1) btn.closest('.section-row').remove();
+}
+function removeGroup(btn) { btn.closest('.class-group').remove(); }
+function toggleOverrides(btn) {
+    var box = btn.nextElementSibling;
+    box.classList.toggle('open');
+    btn.textContent = box.classList.contains('open') ? '▲ Hide teacher overrides' : '▼ Override teachers for this section';
+}
+function addSectionToGroup(btn, gIdx) {
+    var body = btn.closest('.class-group').querySelector('.class-group-body');
+    var sIdx = body.querySelectorAll('.section-row').length;
+    var row = document.createElement('div');
+    row.className = 'section-row';
+    row.innerHTML =
+        '<div class="section-row-top">' +
+            '<div class="form-group" style="flex:1;min-width:120px;">' +
+                '<label>Section Name</label>' +
+                '<input type="text" name="sections[' + gIdx + '][]" placeholder="e.g., A" required>' +
+            '</div>' +
+            '<button type="button" class="btn-remove" onclick="removeSection(this)">' + removeIcon + '</button>' +
+        '</div>' +
+        '<button type="button" class="btn-toggle-override" onclick="toggleOverrides(this)">▼ Override teachers for this section</button>' +
+        '<div class="section-overrides"></div>';
+    body.appendChild(row);
+}
+function addClassGroup() {
+    var gIdx = groupCount++;
+    var container = document.getElementById('classGroupList');
+    var group = document.createElement('div');
+    group.className = 'class-group';
+    group.innerHTML =
+        '<div class="class-group-header">' +
+            '<div class="form-group" style="flex:1;">' +
+                '<label>Class Name</label>' +
+                '<input type="text" name="class_groups[' + gIdx + ']" placeholder="e.g., Class 10" required>' +
+            '</div>' +
+            '<button type="button" class="btn-remove" onclick="removeGroup(this)">' + removeIcon + '</button>' +
+        '</div>' +
+        '<div class="class-group-body"></div>' +
+        '<div style="padding:0 14px 12px;">' +
+            '<button type="button" class="btn-add-section" onclick="addSectionToGroup(this,' + gIdx + ')">+ Add Section</button>' +
+        '</div>';
+    container.appendChild(group);
+    addSectionToGroup(group.querySelector('.btn-add-section'), gIdx);
 }
 var removeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 function addRow(listId, name, labelText, placeholder) {
