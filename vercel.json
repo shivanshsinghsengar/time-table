@@ -1,18 +1,13 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
+﻿{
   "functions": {
     "api/generate.php": {
       "runtime": "vercel-php@0.7.4"
     }
   },
   "routes": [
-    {
-      "src": "^/$",
-      "dest": "/timetable/index.html"
-    },
-    {
-      "src": "^/generate\\.php$",
-      "dest": "/api/generate.php"
-    }
+    { "src": "^/presentation$", "dest": "/presentation/index.html" },
+    { "src": "^/presentation/$", "dest": "/presentation/index.html" },
+    { "src": "^/$", "dest": "/timetable/index.html" },
+    { "src": "^/generate\\.php$", "dest": "/api/generate.php" }
   ]
 }
