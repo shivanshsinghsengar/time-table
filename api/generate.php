@@ -8,17 +8,52 @@ $periodDuration = (int)($_POST['period_duration'] ?? 45);
 $lunchStart     = $_POST['lunch_start']     ?? '11:00';
 $lunchEnd       = $_POST['lunch_end']       ?? '11:30';
 $daysPerWeek    = (int)($_POST['days_per_week'] ?? 5);
-$classNames     = array_values(array_filter(array_map('trim', $_POST['classes']  ?? [])));
 $subjectNames   = array_values(array_filter(array_map('trim', $_POST['subjects'] ?? [])));
 $teacherNames   = array_values(array_filter(array_map('trim', $_POST['teachers'] ?? [])));
-$teacherSubjects= array_map('trim', $_POST['teacher_subjects']   ?? []);
 $teacherLunchS  = $_POST['teacher_lunch_start'] ?? [];
 $teacherLunchE  = $_POST['teacher_lunch_end']   ?? [];
 $allowFree      = ($_POST['allow_free']    ?? 'no') === 'yes';
 $freePerDay     = (int)($_POST['free_per_day']   ?? 1);
 $freePosition   = $_POST['free_position'] ?? 'end';
 
-if (empty($classNames)||empty($subjectNames)||empty($teacherNames))
+// Build flat class list from groups + sections
+// POST: class_groups[gIdx] = "Class 10", sections[gIdx][] = ["A","B","C"]
+// overrides: override_teacher[gIdx][sIdx][subjectIdx], override_lunch_start/end same
+$classGroups   = $_POST['class_groups']   ?? [];
+$sectionsPost  = $_POST['sections']       ?? [];
+$overrideTeacher     = $_POST['override_teacher']      ?? [];
+$overrideLunchStart  = $_POST['override_lunch_start']  ?? [];
+$overrideLunchEnd    = $_POST['override_lunch_end']    ?? [];
+
+$classNames = [];
+$classOverrides = []; // classNames index => [subjectIdx => ['teacher'=>'','lunch_start'=>'','lunch_end'=>'']]
+
+foreach ($classGroups as $gIdx => $groupName) {
+    $groupName = trim($groupName);
+    if ($groupName === '') continue;
+    $sections = $sectionsPost[$gIdx] ?? [];
+    foreach ($sections as $sIdx => $secName) {
+        $secName = trim($secName);
+        if ($secName === '') continue;
+        $fullName = $groupName . ' - ' . $secName;
+        $ci = count($classNames);
+        $classNames[] = $fullName;
+        $overrides = [];
+        foreach (($overrideTeacher[$gIdx][$sIdx] ?? []) as $subIdx => $tName) {
+            $tName = trim($tName);
+            if ($tName !== '') {
+                $overrides[(int)$subIdx] = [
+                    'teacher'     => $tName,
+                    'lunch_start' => $overrideLunchStart[$gIdx][$sIdx][$subIdx] ?? $lunchStart,
+                    'lunch_end'   => $overrideLunchEnd[$gIdx][$sIdx][$subIdx]   ?? $lunchEnd,
+                ];
+            }
+        }
+        $classOverrides[$ci] = $overrides;
+    }
+}
+
+if (empty($classNames) || empty($subjectNames) || empty($teacherNames))
     die("<p style='color:#dc2626;font-family:sans-serif;padding:40px;'>Please fill in classes, subjects, and teachers.</p>");
 
 function toMins(string $t): int { [$h,$m]=explode(':',$t); return (int)$h*60+(int)$m; }
@@ -69,30 +104,48 @@ function getFreeSlotIndices(array $idx,int $n,string $pos):array{
     return $picks;
 }
 
-function generateTimetable(array $classes,array $subjects,array $teachers,array $stm,array $days,array $slots,bool $af,int $fpd,string $fp):array{
+function generateTimetable(array $classes,array $subjects,array $teachers,array $stm,array $days,array $slots,bool $af,int $fpd,string $fp, array $classOverrides=[]): array{
     $nc=count($classes);$ns=count($subjects);
     $quota=[];for($ci=0;$ci<$nc;$ci++)for($si=0;$si<$ns;$si++)$quota[$ci][$si]=$subjects[$si]['periods_per_week'];
     $booked=[];$tt=[];
     $nlIdx=array_keys(array_filter($slots,fn($s)=>!$s['is_lunch']));
     $freeIdx=$af?getFreeSlotIndices($nlIdx,$fpd,$fp):[];
+
+    // build per-class teacher pool
+    $classTeachers = [];
+    $classStm = [];
+    for($ci=0;$ci<$nc;$ci++){
+        $overrides = $classOverrides[$ci] ?? [];
+        $pool = $teachers;
+        $map  = $stm;
+        foreach($overrides as $subIdx => $ov){
+            $pool[] = ['name'=>$ov['teacher'],'lunch_start'=>$ov['lunch_start'],'lunch_end'=>$ov['lunch_end']];
+            $map[$subIdx] = count($pool)-1;
+        }
+        $classTeachers[$ci] = $pool;
+        $classStm[$ci] = $map;
+    }
+
     foreach($days as $day){
         for($ci=0;$ci<$nc;$ci++){
             $used=[];
+            $pool = $classTeachers[$ci];
+            $map  = $classStm[$ci];
             foreach($slots as $sIdx=>$slot){
                 if($slot['is_lunch']){$tt[$ci][$day][$sIdx]=['subject'=>'LUNCH BREAK','teacher'=>'','start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>true,'is_free'=>false];continue;}
                 if($af&&in_array($sIdx,$freeIdx)){$tt[$ci][$day][$sIdx]=['subject'=>'FREE PERIOD','teacher'=>'','start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>true];continue;}
                 $cands=[];
                 for($si=0;$si<$ns;$si++){
                     if(in_array($si,$used))continue; if($quota[$ci][$si]<=0)continue;
-                    $ti=$stm[$si]??null; if($ti===null)continue;
-                    if(teacherOnLunch($teachers[$ti],$slot))continue;
-                    if(!empty($booked[$day][$sIdx][$ti]))continue;
+                    $ti=$map[$si]??null; if($ti===null)continue;
+                    if(teacherOnLunch($pool[$ti],$slot))continue;
+                    if(!empty($booked[$day][$sIdx][$ci.'_'.$ti]))continue;
                     $cands[]=['si'=>$si,'ti'=>$ti,'quota'=>$quota[$ci][$si]];
                 }
                 if(!empty($cands)){
                     usort($cands,fn($a,$b)=>$b['quota']-$a['quota']);$p=$cands[0];
-                    $quota[$ci][$p['si']]--;$booked[$day][$sIdx][$p['ti']]=true;$used[]=$p['si'];
-                    $tt[$ci][$day][$sIdx]=['subject'=>$subjects[$p['si']]['name'],'teacher'=>$teachers[$p['ti']]['name'],'start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>false];
+                    $quota[$ci][$p['si']]--;$booked[$day][$sIdx][$ci.'_'.$p['ti']]=true;$used[]=$p['si'];
+                    $tt[$ci][$day][$sIdx]=['subject'=>$subjects[$p['si']]['name'],'teacher'=>$pool[$p['ti']]['name'],'start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>false];
                 }else{
                     $tt[$ci][$day][$sIdx]=['subject'=>'FREE PERIOD','teacher'=>'','start'=>$slot['start'],'end'=>$slot['end'],'is_lunch'=>false,'is_free'=>true];
                 }
@@ -102,7 +155,7 @@ function generateTimetable(array $classes,array $subjects,array $teachers,array 
     return $tt;
 }
 
-$timetable   = generateTimetable($classNames,$subjects,$teachers,$subjectTeacherMap,$days,$slots,$allowFree,$freePerDay,$freePosition);
+$timetable   = generateTimetable($classNames,$subjects,$teachers,$subjectTeacherMap,$days,$slots,$allowFree,$freePerDay,$freePosition,$classOverrides);
 $totalPeriods= $slotsPerDay;
 $reportDate  = date('d/m/Y');
 $facultyList = [];
