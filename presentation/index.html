@@ -641,14 +641,143 @@
         <p style="margin-top: 18px; font-size: 0.78rem; color: rgba(255,255,255,0.4);">All tables use ON DELETE CASCADE / SET NULL foreign keys for referential integrity.</p>
     </div>
 
-    <!-- SLIDE 8: DEMO -->
-    <div class="slide slide-8">
-        <div class="slide-label" style="color: #a5f3fc;">Live Demo</div>
+    <!-- SLIDE 8: INPUT EXAMPLE -->
+    <div class="slide slide-8" style="background:#0f172a;">
+        <div class="slide-label">Step by Step</div>
+        <h2>What you <span>enter</span></h2>
+        <div class="grid-2" style="gap:16px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="card" style="border-color:rgba(249,115,22,0.4);background:rgba(249,115,22,0.07);">
+                    <h3>🏫 School Info</h3>
+                    <p>Name: <b style="color:#fbbf24;">Delhi Public School</b><br>
+                    Start: <b style="color:#fbbf24;">08:00 AM</b> &nbsp;|&nbsp; End: <b style="color:#fbbf24;">02:00 PM</b><br>
+                    Period: <b style="color:#fbbf24;">45 mins</b> &nbsp;|&nbsp; Lunch: <b style="color:#fbbf24;">11:00–11:30</b><br>
+                    Days: <b style="color:#fbbf24;">5 days/week</b></p>
+                </div>
+                <div class="card" style="border-color:rgba(59,130,246,0.4);background:rgba(59,130,246,0.07);">
+                    <h3>🏛️ Classes &amp; Sections</h3>
+                    <p>Class Group: <b style="color:#60a5fa;">Class 10</b><br>
+                    Sections: <b style="color:#60a5fa;">A, B, C</b><br>
+                    Each section gets its own separate timetable tab.</p>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="card" style="border-color:rgba(52,211,153,0.4);background:rgba(52,211,153,0.07);">
+                    <h3>📚 Subjects &amp; Teachers</h3>
+                    <p>
+                    Maths → <b style="color:#34d399;">Mr. Sharma</b><br>
+                    English → <b style="color:#34d399;">Ms. Priya</b><br>
+                    Science → <b style="color:#34d399;">Mr. Verma</b><br>
+                    Hindi → <b style="color:#34d399;">Ms. Rani</b><br>
+                    Computer → <b style="color:#34d399;">Mr. Singh</b>
+                    </p>
+                </div>
+                <div class="card" style="border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.07);">
+                    <h3>🔄 Section Override (optional)</h3>
+                    <p>Class 10-B Maths → <b style="color:#a78bfa;">Mr. Gupta</b> (different teacher)<br>
+                    All other subjects use the default teacher.<br>
+                    Leave blank = use default.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: OUTPUT EXAMPLE -->
+    <div class="slide" style="background:#0f172a;">
+        <div class="slide-label">Output</div>
+        <h2>What you <span>get</span></h2>
+        <div style="background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;max-width:900px;">
+            <div style="background:#1e3a5f;padding:12px 20px;text-align:center;">
+                <b style="font-size:1rem;">Delhi Public School — Class 10 - A</b>
+                <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-left:16px;">5 days/week · 45 min periods · 7 periods/day</span>
+            </div>
+            <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.75rem;min-width:600px;">
+                <thead>
+                    <tr style="background:#2d4f7c;">
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">Day</th>
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">8:00–8:45</th>
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">8:45–9:30</th>
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">9:30–10:15</th>
+                        <th style="padding:8px 12px;border:1px solid #fbbf24;background:#78350f;">11:00–11:30</th>
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">11:30–12:15</th>
+                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">12:15–1:00</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:8px 12px;background:#1e3a5f;font-weight:700;border:1px solid #2d4f7c;">MON</td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Maths</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Sharma)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">English</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Priya)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Science</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Verma)</span></td>
+                        <td style="padding:8px 12px;background:#78350f;text-align:center;font-weight:700;color:#fbbf24;border:1px solid #fbbf24;">🍽 Lunch</td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Hindi</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Rani)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Computer</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Singh)</span></td>
+                    </tr>
+                    <tr style="background:rgba(255,255,255,0.02);">
+                        <td style="padding:8px 12px;background:#1e3a5f;font-weight:700;border:1px solid #2d4f7c;">TUE</td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Science</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Verma)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Maths</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Sharma)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Computer</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Singh)</span></td>
+                        <td style="padding:8px 12px;background:#78350f;text-align:center;font-weight:700;color:#fbbf24;border:1px solid #fbbf24;">🍽 Lunch</td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">English</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Priya)</span></td>
+                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;color:#475569;font-style:italic;">— Free —</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:16px;">
+            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:8px;">🔵 Subject Period</span>
+            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:8px;">🟡 Lunch Break</span>
+            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;">⬜ Free Period</span>
+            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);border-radius:8px;">✅ Print / PDF ready</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: CONFLICT PREVENTION -->
+    <div class="slide" style="background:#0f172a;">
+        <div class="slide-label">Conflict Prevention</div>
+        <h2>How <span>double booking</span> is prevented</h2>
+        <div class="grid-2" style="gap:20px;max-width:900px;">
+            <div>
+                <div style="background:#1e293b;border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:20px;margin-bottom:16px;">
+                    <p style="font-size:0.75rem;color:#f87171;font-weight:700;margin-bottom:10px;">❌ WITHOUT conflict check</p>
+                    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-A · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b></td></tr>
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-B · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b> ⚠️</td></tr>
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-C · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b> ⚠️</td></tr>
+                    </table>
+                    <p style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:8px;">Same teacher in 3 classes at the same time — impossible!</p>
+                </div>
+            </div>
+            <div>
+                <div style="background:#1e293b;border:1px solid rgba(52,211,153,0.3);border-radius:12px;padding:20px;margin-bottom:16px;">
+                    <p style="font-size:0.75rem;color:#34d399;font-weight:700;margin-bottom:10px;">✅ WITH conflict check</p>
+                    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-A · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#34d399;">Mr. Sharma</b> ✓</td></tr>
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-B · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">English → <b style="color:#34d399;">Ms. Priya</b> ✓</td></tr>
+                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-C · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Science → <b style="color:#34d399;">Mr. Verma</b> ✓</td></tr>
+                    </table>
+                    <p style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:8px;">Each teacher appears only once per time slot.</p>
+                </div>
+            </div>
+        </div>
+        <div class="algo-block" style="margin-top:4px;font-size:0.78rem;">
+            <span class="cm">// Key: $booked[day][slot][teacherName] = true</span><br>
+            <span class="kw">if</span> (!empty($booked[$day][$slot][<span class="fn">strtolower</span>($teacherName)])) <span class="kw">continue</span>; <span class="cm">// skip — already booked</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 11: DEMO -->
+    <div class="slide" style="background:linear-gradient(135deg,#0f766e 0%,#1d4ed8 100%);align-items:center;text-align:center;">
+        <div class="slide-label" style="color:#a5f3fc;">Live Demo</div>
         <h2 style="font-size: 2.8rem;">See it in action</h2>
         <div class="demo-url">🔗 time-table-pearl.vercel.app</div>
         <p style="font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 500px; line-height: 1.7;">
             Deployed on Vercel using the vercel-php runtime.<br>
-            No database required for generation — runs fully in-memory.
+            No database required for generation — runs fully in-memory.<br>
+            Works on any device — mobile, tablet, desktop.
         </p>
     </div>
 
@@ -671,12 +800,12 @@
 </div>
 
 <!-- NAVIGATION -->
-<div class="slide-num" id="slideNum">1 / 9</div>
+<div class="slide-num" id="slideNum">1 / 12</div>
 
 <div class="nav">
     <button id="prevBtn" onclick="changeSlide(-1)" disabled>&#8592;</button>
     <div class="dots" id="dots"></div>
-    <span class="counter" id="counter">1 / 9</span>
+    <span class="counter" id="counter">1 / 12</span>
     <button id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
 </div>
 
