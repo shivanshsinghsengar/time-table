@@ -3,16 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeTable Generator — Project Presentation</title>
+    <title>TimeTable Generator Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --olive: #8aaa80;
+            --olive-light: #eef3ec;
+            --herb: #4a6741;
+            --herb-light: #dde8db;
+            --french-blue: #5a7ba8;
+            --blue-light: #dde6f0;
+            --clementine: #c9694a;
+            --clementine-light: #f5e0d9;
+            --calendula: #f9be45;
+            --calendula-light: #fef6d9;
+            --sicilian: #b8ccdb;
+            --sicilian-light: #eaf1f6;
+            --terra: #a05c38;
+            --terra-light: #ecddd4;
+            --linen: #e8e3db;
+            --linen-dark: #c9c3bb;
+            --bg: #f5f2ee;
+            --white: #ffffff;
+            --border: #ddd8d0;
+            --text: #2c2a27;
+            --muted: #7a746c;
+            --light: #f0ece6;
+            --shadow: 0 24px 60px rgba(44, 42, 39, 0.12);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: #fff;
-            height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(249, 190, 69, 0.22), transparent 24%),
+                radial-gradient(circle at bottom left, rgba(90, 123, 168, 0.18), transparent 28%),
+                var(--bg);
+            color: var(--text);
             overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .icon {
+            width: 1em;
+            height: 1em;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
         }
 
         .deck {
@@ -23,827 +87,1207 @@
 
         .slide {
             display: none;
-            width: 100%;
-            height: 100vh;
-            padding: 60px 80px;
             position: absolute;
-            top: 0; left: 0;
-            flex-direction: column;
-            justify-content: center;
+            inset: 0;
+            padding: 56px 72px 120px;
+            background: transparent;
         }
 
         .slide.active {
-            display: flex;
+            display: block;
         }
 
-        /* SLIDE 1 — TITLE */
-        .slide-1 {
-            background: linear-gradient(135deg, #1e3a5f 0%, #4f46e5 60%, #0f766e 100%);
-            align-items: center;
-            text-align: center;
-        }
-
-        .slide-1 .badge {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 6px 20px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 28px;
-            color: #a5f3fc;
-        }
-
-        .slide-1 h1 {
-            font-size: 3.8rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 20px;
-        }
-
-        .slide-1 h1 span { color: #fbbf24; }
-
-        .slide-1 p {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.75);
-            max-width: 600px;
-            line-height: 1.7;
-            margin-bottom: 40px;
-        }
-
-        .slide-1 .tags {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .tag-pill {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* SLIDE 2 — PROBLEM */
-        .slide-2 { background: #0f172a; }
-
-        /* SLIDE 3 — TECH STACK */
-        .slide-3 { background: #0f172a; }
-
-        /* SLIDE 4 — FEATURES */
-        .slide-4 { background: #0f172a; }
-
-        /* SLIDE 5 — HOW IT WORKS */
-        .slide-5 { background: #0f172a; }
-
-        /* SLIDE 6 — ALGORITHM */
-        .slide-6 { background: #0f172a; }
-
-        /* SLIDE 7 — DATABASE */
-        .slide-7 { background: #0f172a; }
-
-        /* SLIDE 8 — DEMO */
-        .slide-8 {
-            background: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
-            align-items: center;
-            text-align: center;
-        }
-
-        /* SLIDE 9 — THANK YOU */
-        .slide-9 {
-            background: linear-gradient(135deg, #1e3a5f 0%, #4f46e5 60%, #0f766e 100%);
-            align-items: center;
-            text-align: center;
-        }
-
-        /* COMMON */
-        .slide-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #60a5fa;
-            margin-bottom: 16px;
-        }
-
-        .slide h2 {
-            font-size: 2.6rem;
-            font-weight: 800;
-            margin-bottom: 40px;
-            line-height: 1.15;
-        }
-
-        .slide h2 span { color: #fbbf24; }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-        }
-
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 24px;
-        }
-
-        .card .icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .card h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #e2e8f0;
-        }
-
-        .card p {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.55);
-            line-height: 1.6;
-        }
-
-        .highlight-card {
-            background: rgba(79,70,229,0.2);
-            border-color: rgba(79,70,229,0.5);
-        }
-
-        .problem-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            max-width: 700px;
-        }
-
-        .problem-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 18px 22px;
-        }
-
-        .problem-item .num {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #4f46e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        .problem-item p {
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.8);
-            line-height: 1.5;
-            padding-top: 4px;
-        }
-
-        .tech-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 30px 24px;
-            text-align: center;
-        }
-
-        .tech-card .tech-icon {
-            font-size: 3rem;
-            margin-bottom: 14px;
-        }
-
-        .tech-card h3 {
-            font-size: 1.2rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .tech-card p {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.6;
-        }
-
-        .tech-card.php { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); }
-        .tech-card.mysql { border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.08); }
-        .tech-card.html { border-color: rgba(249,115,22,0.5); background: rgba(249,115,22,0.08); }
-        .tech-card.css { border-color: rgba(20,184,166,0.5); background: rgba(20,184,166,0.08); }
-
-        .step-flow {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .step-box {
-            background: rgba(79,70,229,0.15);
-            border: 1.5px solid rgba(79,70,229,0.4);
-            border-radius: 12px;
-            padding: 18px 22px;
-            text-align: center;
-            flex: 1;
-            min-width: 130px;
-        }
-
-        .step-box .snum {
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: #818cf8;
-            margin-bottom: 6px;
-        }
-
-        .step-box p {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.4;
-        }
-
-        .arrow {
-            font-size: 1.4rem;
-            color: rgba(255,255,255,0.3);
-            padding: 0 8px;
-        }
-
-        .algo-block {
-            background: #1e293b;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 20px 24px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.82rem;
-            color: #94a3b8;
-            line-height: 1.8;
-        }
-
-        .algo-block .kw { color: #818cf8; }
-        .algo-block .fn { color: #34d399; }
-        .algo-block .cm { color: #475569; }
-        .algo-block .str { color: #fbbf24; }
-
-        .db-table {
-            background: #1e293b;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+        .panel {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.94)),
+                var(--white);
+            border: 1px solid rgba(221, 216, 208, 0.9);
+            box-shadow: var(--shadow);
+            padding: 40px 46px;
+            position: relative;
             overflow: hidden;
         }
 
-        .db-table table {
+        .panel::before,
+        .panel::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .panel::before {
+            width: 260px;
+            height: 260px;
+            top: -120px;
+            right: -100px;
+            background: rgba(90, 123, 168, 0.12);
+        }
+
+        .panel::after {
+            width: 220px;
+            height: 220px;
+            left: -100px;
+            bottom: -110px;
+            background: rgba(138, 170, 128, 0.14);
+        }
+
+        .panel.hero-panel,
+        .panel.outro-panel {
+            background:
+                linear-gradient(135deg, rgba(74, 103, 65, 0.97), rgba(90, 123, 168, 0.94) 58%, rgba(201, 105, 74, 0.9)),
+                var(--herb);
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .panel.hero-panel::before,
+        .panel.outro-panel::before {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .panel.hero-panel::after,
+        .panel.outro-panel::after {
+            background: rgba(249, 190, 69, 0.18);
+        }
+
+        .slide-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--terra);
+            background: var(--terra-light);
+            border-radius: 999px;
+            padding: 9px 14px;
+        }
+
+        .hero-panel .slide-label,
+        .outro-panel .slide-label {
+            color: var(--calendula);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .slide-meta {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .hero-panel .slide-meta,
+        .outro-panel .slide-meta {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        h1,
+        h2 {
+            font-family: "DM Serif Display", serif;
+            letter-spacing: -0.03em;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 4.8rem);
+            line-height: 0.97;
+        }
+
+        h2 {
+            font-size: clamp(2.1rem, 3vw, 3.2rem);
+            line-height: 1.05;
+            margin-bottom: 24px;
+        }
+
+        .accent {
+            color: var(--calendula);
+        }
+
+        .hero-copy {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 32px;
+            align-items: center;
+            height: calc(100% - 84px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-copy p {
+            font-size: 1.02rem;
+            line-height: 1.8;
+            max-width: 620px;
+            color: rgba(255, 255, 255, 0.84);
+            margin: 24px 0 28px;
+        }
+
+        .hero-badges,
+        .tags,
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-badges .tag,
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .tag svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hero-art {
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .hero-photo,
+        .image-frame {
+            overflow: hidden;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 24px 44px rgba(19, 25, 16, 0.24);
+        }
+
+        .hero-photo img,
+        .image-frame img {
+            display: block;
             width: 100%;
-            border-collapse: collapse;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-photo {
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .image-note {
+            font-size: 0.74rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        .image-note a {
+            color: var(--calendula);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+        }
+
+        .content-grid {
+            display: grid;
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .card,
+        .problem-item,
+        .step-box,
+        .summary-box,
+        .schema-card,
+        .stat-box {
+            border-radius: 22px;
+            border: 1px solid rgba(221, 216, 208, 0.9);
+            background: rgba(255, 255, 255, 0.74);
+            backdrop-filter: blur(10px);
+            padding: 22px;
+        }
+
+        .card,
+        .problem-item,
+        .summary-box,
+        .schema-card {
+            box-shadow: 0 10px 22px rgba(44, 42, 39, 0.05);
+        }
+
+        .card-header,
+        .item-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .icon-badge,
+        .step-num,
+        .legend-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-badge {
+            background: var(--sicilian-light);
+            color: var(--french-blue);
+        }
+
+        .icon-badge svg,
+        .step-num svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .card h3,
+        .problem-item h3,
+        .summary-box h3,
+        .schema-card h3,
+        .step-box h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card p,
+        .problem-item p,
+        .summary-box p,
+        .schema-card p,
+        .step-box p,
+        .slide p,
+        li {
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 0.94rem;
+        }
+
+        .problem-list,
+        .stack-list,
+        .feature-list,
+        .step-flow,
+        .schema-grid,
+        .demo-grid {
+            display: grid;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .problem-item {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .problem-item .icon-badge {
+            background: var(--clementine-light);
+            color: var(--clementine);
+        }
+
+        .stack-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .feature-list {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .tech-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::after {
+            content: "";
+            position: absolute;
+            inset: auto 18px 14px 18px;
+            height: 4px;
+            border-radius: 999px;
+            background: currentColor;
+            opacity: 0.18;
+        }
+
+        .php { color: var(--herb); background: linear-gradient(180deg, rgba(221, 232, 219, 0.95), rgba(255, 255, 255, 0.92)); }
+        .mysql { color: var(--french-blue); background: linear-gradient(180deg, rgba(221, 230, 240, 0.95), rgba(255, 255, 255, 0.92)); }
+        .html { color: var(--clementine); background: linear-gradient(180deg, rgba(245, 224, 217, 0.95), rgba(255, 255, 255, 0.92)); }
+        .css { color: var(--terra); background: linear-gradient(180deg, rgba(236, 221, 212, 0.95), rgba(255, 255, 255, 0.92)); }
+
+        .highlight-card {
+            border-color: rgba(249, 190, 69, 0.8);
+            background: linear-gradient(180deg, rgba(254, 246, 217, 0.96), rgba(255, 255, 255, 0.92));
+        }
+
+        .step-flow {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            align-items: stretch;
+        }
+
+        .step-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .step-box::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: -11px;
+            width: 22px;
+            height: 2px;
+            background: var(--linen-dark);
+        }
+
+        .step-box:last-child::after {
+            display: none;
+        }
+
+        .step-num {
+            background: var(--blue-light);
+            color: var(--french-blue);
+            font-size: 0.94rem;
+            font-weight: 800;
+        }
+
+        .step-box:nth-child(1) .step-num { background: var(--clementine-light); color: var(--clementine); }
+        .step-box:nth-child(2) .step-num { background: var(--blue-light); color: var(--french-blue); }
+        .step-box:nth-child(3) .step-num { background: var(--olive-light); color: var(--herb); }
+        .step-box:nth-child(4) .step-num { background: var(--calendula-light); color: #946200; }
+        .step-box:nth-child(5) .step-num { background: var(--terra-light); color: var(--terra); }
+
+        .summary-strip {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 18px;
+            margin-top: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .summary-box ul,
+        .schema-card ul {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .summary-box li,
+        .schema-card li {
+            display: flex;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .bullet {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--calendula);
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .algo-block {
+            background: #232722;
+            color: #ecede8;
+            border-radius: 24px;
+            padding: 26px 28px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.88rem;
+            line-height: 1.8;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        .kw { color: #9bc7ff; }
+        .fn { color: #f6d37d; }
+        .cm { color: #95a28f; }
+        .st { color: #f3b08e; }
+
+        .schema-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .schema-card h3 {
+            color: var(--text);
+        }
+
+        .schema-card p strong {
+            color: var(--text);
+        }
+
+        .image-layout {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 20px;
+            align-items: stretch;
+            height: calc(100% - 90px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .image-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            min-height: 0;
+        }
+
+        .image-frame {
+            min-height: 0;
+            flex: 1;
+            border-color: rgba(74, 103, 65, 0.14);
+            box-shadow: 0 18px 36px rgba(44, 42, 39, 0.12);
+        }
+
+        .image-panel .image-note {
+            color: var(--muted);
+        }
+
+        .image-panel .image-note a {
+            color: var(--herb);
+        }
+
+        .demo-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .demo-card {
+            border-radius: 24px;
+            border: 1px solid rgba(221, 216, 208, 0.9);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.82);
+        }
+
+        .demo-card .demo-top {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--herb), var(--french-blue));
+            color: var(--white);
+        }
+
+        .demo-card .demo-top b {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .demo-card .demo-top span {
+            color: rgba(255, 255, 255, 0.74);
             font-size: 0.78rem;
         }
 
-        .db-table thead th {
-            background: #4f46e5;
-            padding: 10px 14px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .mini-table {
+            font-size: 0.74rem;
+        }
+
+        .mini-table th {
+            background: var(--french-blue);
+            color: var(--white);
+            padding: 10px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .mini-table td {
+            padding: 10px 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .mini-table td:first-child,
+        .mini-table th:first-child {
             text-align: left;
+            padding-left: 12px;
+        }
+
+        .cell-subject {
+            background: rgba(221, 230, 240, 0.82);
+        }
+
+        .cell-lunch {
+            background: var(--calendula-light);
+            color: #8b6306;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
-        .db-table tbody td {
-            padding: 9px 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.7);
+        .cell-free {
+            background: rgba(240, 236, 230, 0.82);
+            color: var(--muted);
+            font-style: italic;
         }
 
-        .db-table tbody tr:last-child td { border-bottom: none; }
-        .db-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+        .cell-conflict {
+            background: rgba(245, 224, 217, 0.92);
+        }
+
+        .cell-safe {
+            background: rgba(221, 232, 219, 0.92);
+        }
+
+        .legend-row .tag {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(221, 216, 208, 0.9);
+            color: var(--text);
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            margin-right: 8px;
+            display: inline-block;
+        }
 
         .demo-url {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #fbbf24;
-            background: rgba(0,0,0,0.3);
-            padding: 16px 40px;
-            border-radius: 12px;
-            margin: 24px 0;
-            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+            padding: 16px 22px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 1.35rem;
+            font-weight: 700;
         }
 
-        /* NAV */
+        .outro-panel .tags {
+            justify-content: center;
+        }
+
+        .outro-copy {
+            height: calc(100% - 84px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .outro-copy p {
+            max-width: 560px;
+            color: rgba(255, 255, 255, 0.82);
+            margin: 18px 0 28px;
+            font-size: 1rem;
+        }
+
         .nav {
             position: fixed;
-            bottom: 30px;
             left: 50%;
+            bottom: 24px;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 16px;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 50px;
-            padding: 10px 24px;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(221, 216, 208, 0.9);
+            box-shadow: 0 14px 36px rgba(44, 42, 39, 0.1);
+            backdrop-filter: blur(16px);
             z-index: 100;
         }
 
         .nav button {
-            background: none;
+            width: 42px;
+            height: 42px;
             border: none;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .nav button:hover { background: rgba(255,255,255,0.15); }
-        .nav button:disabled { opacity: 0.3; cursor: default; }
-
-        .nav .counter {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.6);
-            min-width: 50px;
-            text-align: center;
-        }
-
-        .nav .dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .nav .dot {
-            width: 7px;
-            height: 7px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.25);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--herb);
+            color: var(--white);
             cursor: pointer;
-            transition: background 0.2s;
+            transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
         }
 
-        .nav .dot.on { background: #fff; }
+        .nav button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            background: #3f5937;
+        }
+
+        .nav button:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .counter {
+            min-width: 64px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .dots {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(122, 116, 108, 0.3);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .dot.on {
+            background: var(--herb);
+            transform: scale(1.15);
+        }
 
         .slide-num {
             position: fixed;
             top: 24px;
-            right: 36px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.3);
-            letter-spacing: 1px;
+            right: 28px;
+            padding: 9px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(221, 216, 208, 0.85);
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+            z-index: 100;
+        }
+
+        @media (max-width: 1100px) {
+            body {
+                overflow: auto;
+            }
+
+            .deck,
+            .slide,
+            .panel {
+                height: auto;
+            }
+
+            .slide {
+                position: static;
+                padding: 20px 18px 24px;
+            }
+
+            .slide:not(.active) {
+                display: none;
+            }
+
+            .panel {
+                min-height: calc(100vh - 110px);
+                padding: 28px 22px 92px;
+            }
+
+            .hero-copy,
+            .image-layout,
+            .summary-strip,
+            .stack-list,
+            .feature-list,
+            .demo-grid,
+            .grid-2,
+            .grid-3,
+            .schema-grid,
+            .step-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .step-box::after {
+                display: none;
+            }
+
+            .hero-photo {
+                min-height: 280px;
+            }
+
+            .nav {
+                left: 18px;
+                right: 18px;
+                bottom: 16px;
+                transform: none;
+                justify-content: center;
+                flex-wrap: wrap;
+                border-radius: 24px;
+            }
+
+            .slide-num {
+                top: 12px;
+                right: 12px;
+            }
         }
     </style>
 </head>
 <body>
+<svg class="sr-only" aria-hidden="true" focusable="false">
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"></rect><rect x="3" y="14" width="18" height="6" rx="2"></rect><path d="M7 7h.01M7 17h.01"></path></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 8 4 12l4 4M16 8l4 4-4 4M14 4l-4 16"></path></symbol>
+    <symbol id="i-wand" viewBox="0 0 24 24"><path d="m5 19 14-14"></path><path d="M16 5h4M18 3v4M4 11h4M6 9v4M12 20h4M14 18v4"></path></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="3"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 4.13a4 4 0 0 1 0 7.75"></path></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2Z"></path></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M2 13h20"></path></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 9V3h12v6"></path><path d="M6 14h12v7H6z"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"></path><path d="M12 9v4M12 17h.01"></path></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"></path></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m10 9 5 3-5 3z"></path></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 1 0-7.07-7.07L11 4"></path><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L13 20"></path></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"></path></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"></path></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="8.5" cy="10.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6l4 2"></path></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 4.5-9 4.5L3 7.5 12 3Z"></path><path d="m3 12.5 9 4.5 9-4.5"></path><path d="m3 17 9 4.5 9-4.5"></path></symbol>
+</svg>
 
 <div class="deck">
+    <section class="slide active">
+        <div class="panel hero-panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-calendar"></use></svg>Minor Project Presentation</div>
+                <div class="slide-meta">School automation · web app · timetable logic</div>
+            </div>
+            <div class="hero-copy">
+                <div>
+                    <h1>School <span class="accent">TimeTable</span><br>Generator</h1>
+                    <p>An automated timetable builder for schools and colleges that reduces manual planning, avoids teacher clashes, respects lunch breaks, and produces print-ready section-wise schedules.</p>
+                    <div class="hero-badges">
+                        <span class="tag"><svg class="icon"><use href="#i-code"></use></svg>PHP</span>
+                        <span class="tag"><svg class="icon"><use href="#i-server"></use></svg>MySQL</span>
+                        <span class="tag"><svg class="icon"><use href="#i-grid"></use></svg>HTML</span>
+                        <span class="tag"><svg class="icon"><use href="#i-wand"></use></svg>CSS</span>
+                    </div>
+                </div>
+                <div class="hero-art">
+                    <div class="hero-photo">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Typical_Classroom.jpg/576px-Typical_Classroom.jpg" alt="Open classroom photograph used in the project presentation">
+                    </div>
+                    <p class="image-note">Open image source: <a href="https://commons.wikimedia.org/wiki/File:Typical_Classroom.jpg" target="_blank" rel="noreferrer">Typical Classroom</a> by Feorein on Wikimedia Commons, released under <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noreferrer">CC0 1.0</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- SLIDE 1: TITLE -->
-    <div class="slide slide-1 active">
-        <div class="badge">📅 Minor Project Presentation</div>
-        <h1>School <span>TimeTable</span><br>Generator</h1>
-        <p>An automated, conflict-free timetable builder for schools and colleges — built with PHP, MySQL, HTML &amp; CSS.</p>
-        <div class="tags">
-            <span class="tag-pill">🐘 PHP</span>
-            <span class="tag-pill">🗄️ MySQL</span>
-            <span class="tag-pill">🌐 HTML</span>
-            <span class="tag-pill">🎨 CSS</span>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-alert"></use></svg>The Problem</div>
+                <div class="slide-meta">Why the project matters</div>
+            </div>
+            <h2>Manual timetable planning creates <span class="accent">avoidable chaos</span></h2>
+            <div class="problem-list">
+                <div class="problem-item">
+                    <div class="icon-badge"><svg class="icon"><use href="#i-clock"></use></svg></div>
+                    <div><h3>Too much manual work</h3><p>Building schedules by hand takes hours, especially when periods, teachers, and sections need to line up across the full week.</p></div>
+                </div>
+                <div class="problem-item">
+                    <div class="icon-badge"><svg class="icon"><use href="#i-users"></use></svg></div>
+                    <div><h3>Multiple sections multiply the effort</h3><p>When a class has sections like 10-A, 10-B, and 10-C, each needs a separate valid timetable with shared staff constraints.</p></div>
+                </div>
+                <div class="problem-item">
+                    <div class="icon-badge"><svg class="icon"><use href="#i-briefcase"></use></svg></div>
+                    <div><h3>Teacher clashes happen easily</h3><p>The same teacher can accidentally be assigned to more than one section in the same slot unless conflict checks are built into the system.</p></div>
+                </div>
+                <div class="problem-item">
+                    <div class="icon-badge"><svg class="icon"><use href="#i-grid"></use></svg></div>
+                    <div><h3>Existing tools are often complex</h3><p>Many solutions are expensive, installation-heavy, or not designed for a simple web-based school workflow.</p></div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 2: PROBLEM -->
-    <div class="slide slide-2">
-        <div class="slide-label">The Problem</div>
-        <h2>Why does this <span>project exist?</span></h2>
-        <div class="problem-list">
-            <div class="problem-item">
-                <div class="num">1</div>
-                <p>Making school timetables manually takes hours and is highly error-prone — teachers get double-booked, periods overlap, lunch breaks are missed.</p>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-layers"></use></svg>Tech Stack</div>
+                <div class="slide-meta">Aligned with the main app palette</div>
             </div>
-            <div class="problem-item">
-                <div class="num">2</div>
-                <p>When a school has multiple sections (10-A, 10-B, 10-C), each needs a separate timetable — multiplying the effort significantly.</p>
-            </div>
-            <div class="problem-item">
-                <div class="num">3</div>
-                <p>Different sections sometimes need different teachers for the same subject — managing this manually leads to constant confusion.</p>
-            </div>
-            <div class="problem-item">
-                <div class="num">4</div>
-                <p>There is no free, simple, web-based tool that solves all of this in one place without requiring any installation.</p>
+            <h2>Built with a focused <span class="accent">four-layer stack</span></h2>
+            <div class="stack-list">
+                <article class="card tech-card php">
+                    <div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-code"></use></svg></div><div><h3>PHP</h3></div></div>
+                    <p>Processes the form input, creates period slots, runs the scheduling logic, and renders the final timetable output.</p>
+                </article>
+                <article class="card tech-card mysql">
+                    <div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-server"></use></svg></div><div><h3>MySQL</h3></div></div>
+                    <p>Stores session data, classes, subjects, teachers, and generated records using a clean relational schema.</p>
+                </article>
+                <article class="card tech-card html">
+                    <div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-grid"></use></svg></div><div><h3>HTML</h3></div></div>
+                    <p>Provides the structure for data entry, timetable output, and the presentation itself with semantic content blocks.</p>
+                </article>
+                <article class="card tech-card css">
+                    <div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-wand"></use></svg></div><div><h3>CSS</h3></div></div>
+                    <p>Applies the visual identity, responsive layout, polished cards, and print-friendly timetable styling without a framework.</p>
+                </article>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 3: TECH STACK -->
-    <div class="slide slide-3">
-        <div class="slide-label">Tech Stack</div>
-        <h2>Built with <span>4 technologies</span></h2>
-        <div class="grid-2" style="max-width: 800px;">
-            <div class="tech-card php">
-                <div class="tech-icon">🐘</div>
-                <h3>PHP</h3>
-                <p>Server-side logic — handles form input, runs the scheduling algorithm, and renders the output HTML dynamically.</p>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-check"></use></svg>Features</div>
+                <div class="slide-meta">Core product highlights</div>
             </div>
-            <div class="tech-card mysql">
-                <div class="tech-icon">🗄️</div>
-                <h3>MySQL</h3>
-                <p>Relational database schema designed to store sessions, classes, subjects, teachers, and generated timetable entries.</p>
-            </div>
-            <div class="tech-card html">
-                <div class="tech-icon">🌐</div>
-                <h3>HTML</h3>
-                <p>Semantic markup for the input form and the generated timetable output — structured for print and PDF export.</p>
-            </div>
-            <div class="tech-card css">
-                <div class="tech-icon">🎨</div>
-                <h3>CSS</h3>
-                <p>Fully custom styling — responsive layout, animated countdown, print-ready timetable grid, no external CSS framework used.</p>
+            <h2>What the system <span class="accent">can do</span></h2>
+            <div class="feature-list">
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-users"></use></svg></div><div><h3>Multiple classes and sections</h3></div></div><p>Handles multiple class groups with independent section-wise timetable generation.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-book"></use></svg></div><div><h3>Automatic subject distribution</h3></div></div><p>Uses subject quotas to spread weekly periods in a balanced way rather than clustering them randomly.</p></article>
+                <article class="card highlight-card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-briefcase"></use></svg></div><div><h3>Teacher override per section</h3></div></div><p>Supports section-level teacher changes when one section needs a different faculty assignment for the same subject.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-alert"></use></svg></div><div><h3>No double booking</h3></div></div><p>Prevents the same teacher from appearing in two sections during the same day and slot.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-clock"></use></svg></div><div><h3>Lunch break aware</h3></div></div><p>Respects lunch timing so the generated timetable reflects real working constraints.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-printer"></use></svg></div><div><h3>Print and PDF ready</h3></div></div><p>Produces output that can be presented, printed, or exported cleanly for school use.</p></article>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 4: FEATURES -->
-    <div class="slide slide-4">
-        <div class="slide-label">Features</div>
-        <h2>What it <span>can do</span></h2>
-        <div class="grid-3">
-            <div class="card">
-                <div class="icon">🏫</div>
-                <h3>Multiple Classes &amp; Sections</h3>
-                <p>Add any number of class groups (Class 10, 11, 12) each with multiple sections (A, B, C).</p>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-arrow-right"></use></svg>Workflow</div>
+                <div class="slide-meta">From form to final output</div>
             </div>
-            <div class="card">
-                <div class="icon">📚</div>
-                <h3>Auto Period Distribution</h3>
-                <p>Periods per week are calculated and distributed evenly across all subjects automatically.</p>
+            <h2>How the timetable <span class="accent">gets generated</span></h2>
+            <div class="step-flow">
+                <div class="step-box"><div class="step-num">1</div><h3>Collect input</h3><p>User enters school timing, classes, subjects, and teacher mapping.</p></div>
+                <div class="step-box"><div class="step-num">2</div><h3>Build slots</h3><p>The backend converts school hours into ordered period slots and inserts lunch at the correct time.</p></div>
+                <div class="step-box"><div class="step-num">3</div><h3>Assign subjects</h3><p>A greedy scheduling pass selects valid candidates based on remaining quota and conflicts.</p></div>
+                <div class="step-box"><div class="step-num">4</div><h3>Render sections</h3><p>Each section gets its own timetable view with subject, teacher, lunch, and free period states.</p></div>
+                <div class="step-box"><div class="step-num">5</div><h3>Share output</h3><p>The final layout is ready for browser viewing, printing, or PDF export.</p></div>
             </div>
-            <div class="card highlight-card">
-                <div class="icon">👨‍🏫</div>
-                <h3>Teacher Override per Section</h3>
-                <p>Each section can have a different teacher for any subject — only fill in what's different.</p>
-            </div>
-            <div class="card">
-                <div class="icon">🚫</div>
-                <h3>No Double Booking</h3>
-                <p>A teacher cannot be assigned to two classes at the same time slot on the same day.</p>
-            </div>
-            <div class="card">
-                <div class="icon">🍽️</div>
-                <h3>Lunch Break Aware</h3>
-                <p>Teacher lunch times are respected — no class is assigned during a teacher's break.</p>
-            </div>
-            <div class="card">
-                <div class="icon">🖨️</div>
-                <h3>Print / PDF Export</h3>
-                <p>Every timetable is print-ready with a signature footer for Class Teacher and Incharge.</p>
+            <div class="summary-strip">
+                <div class="summary-box">
+                    <h3><code>buildSlots()</code></h3>
+                    <ul>
+                        <li><span class="bullet"></span><span>Creates a sequence of time slots between school start and end.</span></li>
+                        <li><span class="bullet"></span><span>Inserts the lunch break as a special slot so it is visible in the final timetable.</span></li>
+                    </ul>
+                </div>
+                <div class="summary-box">
+                    <h3><code>generateTimetable()</code></h3>
+                    <ul>
+                        <li><span class="bullet"></span><span>Loops through days, classes, and slots in a consistent order.</span></li>
+                        <li><span class="bullet"></span><span>Chooses the strongest remaining valid candidate at each step.</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 5: HOW IT WORKS -->
-    <div class="slide slide-5">
-        <div class="slide-label">Workflow</div>
-        <h2>How it <span>works</span></h2>
-        <div class="step-flow">
-            <div class="step-box">
-                <div class="snum">1</div>
-                <p>User fills the form — school info, classes, subjects, teachers</p>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-code"></use></svg>Algorithm</div>
+                <div class="slide-meta">Greedy scheduling logic</div>
             </div>
-            <div class="arrow">→</div>
-            <div class="step-box">
-                <div class="snum">2</div>
-                <p>PHP receives POST data and builds time slots using school timings</p>
+            <h2>The core <span class="accent">assignment strategy</span></h2>
+            <div class="algo-block">
+                <span class="cm">// For each day, class, and time slot:</span><br>
+                <span class="kw">foreach</span> ($days <span class="kw">as</span> $day) {<br>
+                &nbsp;&nbsp;<span class="kw">foreach</span> ($classes <span class="kw">as</span> $class) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span> ($slots <span class="kw">as</span> $slot) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$candidates = <span class="fn">findCandidates</span>($subjects, $booked, $slot);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Sort by remaining quota so important subjects get priority</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">usort</span>($candidates, <span class="kw">fn</span>($a, $b) =&gt; $b[<span class="st">'quota'</span>] - $a[<span class="st">'quota'</span>]);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$selected = $candidates[0] ?? <span class="kw">null</span>;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (!$selected) { <span class="kw">continue</span>; }<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$quota[$class][$selected[<span class="st">'subject'</span>]]--;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$booked[$day][$slot][$selected[<span class="st">'teacher'</span>]] = <span class="kw">true</span>;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;}<br>
+                }<br>
             </div>
-            <div class="arrow">→</div>
-            <div class="step-box">
-                <div class="snum">3</div>
-                <p>Greedy algorithm assigns subjects to slots per class per day</p>
-            </div>
-            <div class="arrow">→</div>
-            <div class="step-box">
-                <div class="snum">4</div>
-                <p>PHP renders the timetable as HTML — one tab per section</p>
-            </div>
-            <div class="arrow">→</div>
-            <div class="step-box">
-                <div class="snum">5</div>
-                <p>User views, switches tabs, and prints or exports as PDF</p>
+            <div class="summary-strip">
+                <div class="summary-box"><h3>Conflict prevention</h3><p>The booking matrix records teacher usage per day and per slot so the same teacher cannot be assigned twice at the same moment.</p></div>
+                <div class="summary-box"><h3>Graceful fallback</h3><p>If no valid candidate exists, the timetable can safely leave that slot as a free period instead of failing.</p></div>
             </div>
         </div>
-        <div style="margin-top: 32px; display: flex; gap: 16px;">
-            <div class="card" style="flex: 1;">
-                <h3>buildSlots()</h3>
-                <p>Converts school start/end time into an ordered array of period slots, inserting the lunch break at the correct position.</p>
-            </div>
-            <div class="card" style="flex: 1;">
-                <h3>generateTimetable()</h3>
-                <p>Loops over days → classes → slots. Picks the best candidate subject using a quota-based greedy approach.</p>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 6: ALGORITHM -->
-    <div class="slide slide-6">
-        <div class="slide-label">Core Logic</div>
-        <h2>The <span>Scheduling Algorithm</span></h2>
-        <div class="algo-block">
-            <span class="cm">// For each day → each class → each time slot:</span><br>
-            <span class="kw">foreach</span> ($days <span class="kw">as</span> $day) {<br>
-            &nbsp;&nbsp;<span class="kw">foreach</span> ($classes <span class="kw">as</span> $class) {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span> ($slots <span class="kw">as</span> $slot) {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Find valid candidates (subject not used today, quota > 0,</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// teacher not on lunch, teacher not already booked this slot)</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cands = <span class="fn">findCandidates</span>($subjects, $booked, $slot);<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Pick subject with highest remaining quota (greedy)</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">usort</span>($cands, <span class="kw">fn</span>($a,$b) => $b[<span class="str">'quota'</span>] - $a[<span class="str">'quota'</span>]);<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$quota[$class][$subject]--; &nbsp;<span class="cm">// decrement</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$booked[$day][$slot][$teacher] = <span class="kw">true</span>;<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
-            &nbsp;&nbsp;}<br>
-            }
-        </div>
-        <div style="display: flex; gap: 16px; margin-top: 20px;">
-            <div class="card" style="flex: 1;">
-                <h3>Conflict Prevention</h3>
-                <p>$booked[day][slot][teacher] = true ensures no teacher is assigned twice in the same slot across different classes.</p>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-server"></use></svg>Database</div>
+                <div class="slide-meta">Relational model overview</div>
             </div>
-            <div class="card" style="flex: 1;">
-                <h3>Graceful Fallback</h3>
-                <p>If no valid candidate exists for a slot, it automatically becomes a Free Period instead of crashing.</p>
+            <h2>MySQL schema for <span class="accent">session-based data</span></h2>
+            <div class="schema-grid">
+                <article class="schema-card"><h3><code>tt_sessions</code></h3><ul><li><span class="bullet"></span><span><strong>Core fields:</strong> school name, start time, end time</span></li><li><span class="bullet"></span><span><strong>Planning fields:</strong> period duration, lunch time, days per week</span></li></ul></article>
+                <article class="schema-card"><h3><code>tt_subjects</code></h3><ul><li><span class="bullet"></span><span><strong>Links:</strong> subject belongs to a session</span></li><li><span class="bullet"></span><span><strong>Rules:</strong> stores periods per week for quota balancing</span></li></ul></article>
+                <article class="schema-card"><h3><code>tt_teachers</code></h3><ul><li><span class="bullet"></span><span><strong>Faculty info:</strong> teacher name and mapped subject</span></li><li><span class="bullet"></span><span><strong>Availability:</strong> lunch start and lunch end support</span></li></ul></article>
+                <article class="schema-card"><h3><code>tt_timetable</code></h3><ul><li><span class="bullet"></span><span><strong>Output rows:</strong> class, day, period number, start and end</span></li><li><span class="bullet"></span><span><strong>State flags:</strong> lunch and free-period markers for rendering</span></li></ul></article>
+            </div>
+            <div class="summary-strip">
+                <div class="summary-box"><h3>Why this structure works</h3><p>The schema keeps inputs, constraints, and generated timetable rows separated, making the generator easier to maintain and extend.</p></div>
+                <div class="summary-box"><h3>Integrity support</h3><p>Foreign keys and cascade behavior help keep session-scoped records consistent when a school setup is updated or removed.</p></div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 7: DATABASE -->
-    <div class="slide slide-7">
-        <div class="slide-label">Database</div>
-        <h2>MySQL <span>Schema</span></h2>
-        <div class="grid-2">
-            <div>
-                <div class="db-table" style="margin-bottom: 16px;">
-                    <table>
-                        <thead><tr><th colspan="2">tt_sessions</th></tr></thead>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-image"></use></svg>Input Example</div>
+                <div class="slide-meta">What users provide</div>
+            </div>
+            <h2>What the user <span class="accent">enters first</span></h2>
+            <div class="content-grid grid-2">
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-calendar"></use></svg></div><div><h3>School information</h3></div></div><p>School name, start time, end time, period duration, lunch interval, and number of working days define the scheduling frame.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-users"></use></svg></div><div><h3>Classes and sections</h3></div></div><p>Examples like Class 10 with sections A, B, and C allow the system to create parallel but independent section timetables.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-book"></use></svg></div><div><h3>Subjects and default teachers</h3></div></div><p>Each subject is linked to a teacher and a weekly period quota so the generator knows both ownership and demand.</p></article>
+                <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-briefcase"></use></svg></div><div><h3>Optional overrides</h3></div></div><p>If one section needs a different teacher for a subject, the override is stored without changing the default for other sections.</p></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-image"></use></svg>Open Image</div>
+                <div class="slide-meta">Presentation visual with license-safe attribution</div>
+            </div>
+            <h2>Open-source image that supports the <span class="accent">school context</span></h2>
+            <div class="image-layout">
+                <div class="image-panel">
+                    <div class="image-frame">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Typical_Classroom.jpg/768px-Typical_Classroom.jpg" alt="Typical classroom used as an openly licensed visual in the presentation">
+                    </div>
+                    <p class="image-note">Source: <a href="https://commons.wikimedia.org/wiki/File:Typical_Classroom.jpg" target="_blank" rel="noreferrer">Wikimedia Commons file page</a>. Author: Feorein. License: <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noreferrer">CC0 1.0</a>, which allows reuse without requesting permission.</p>
+                </div>
+                <div class="content-grid">
+                    <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-check"></use></svg></div><div><h3>Why this image fits</h3></div></div><p>It visually grounds the project in a real classroom environment, which makes the problem and the outcome feel more concrete during a live presentation.</p></article>
+                    <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-link"></use></svg></div><div><h3>Why the license matters</h3></div></div><p>Using a CC0 image avoids copyright issues and keeps the presentation safe to share publicly, upload, or include in submissions.</p></article>
+                    <article class="card"><div class="card-header"><div class="icon-badge"><svg class="icon"><use href="#i-wand"></use></svg></div><div><h3>How it is used here</h3></div></div><p>The image is placed in the hero slide and this dedicated slide so it works both as atmosphere and as a documented asset reference.</p></article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-grid"></use></svg>Output</div>
+                <div class="slide-meta">What the generated timetable looks like</div>
+            </div>
+            <h2>What the user <span class="accent">gets back</span></h2>
+            <div class="demo-card">
+                <div class="demo-top">
+                    <b>Delhi Public School · Class 10-A</b>
+                    <span>5 days/week · 45 minute periods · print-ready timetable view</span>
+                </div>
+                <div style="overflow-x:auto; padding: 0 0 4px;">
+                    <table class="mini-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>8:00-8:45</th>
+                                <th>8:45-9:30</th>
+                                <th>9:30-10:15</th>
+                                <th>11:00-11:30</th>
+                                <th>11:30-12:15</th>
+                                <th>12:15-1:00</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td>id, school_name</td><td>school_start, school_end</td></tr>
-                            <tr><td>period_duration</td><td>lunch_start, lunch_end</td></tr>
-                            <tr><td>days_per_week</td><td>created_at</td></tr>
+                            <tr><td><strong>MON</strong></td><td class="cell-subject">Maths<br><small>Mr. Sharma</small></td><td class="cell-subject">English<br><small>Ms. Priya</small></td><td class="cell-subject">Science<br><small>Mr. Verma</small></td><td class="cell-lunch">Lunch</td><td class="cell-subject">Hindi<br><small>Ms. Rani</small></td><td class="cell-subject">Computer<br><small>Mr. Singh</small></td></tr>
+                            <tr><td><strong>TUE</strong></td><td class="cell-subject">Science<br><small>Mr. Verma</small></td><td class="cell-subject">Maths<br><small>Mr. Sharma</small></td><td class="cell-subject">Computer<br><small>Mr. Singh</small></td><td class="cell-lunch">Lunch</td><td class="cell-subject">English<br><small>Ms. Priya</small></td><td class="cell-free">Free Period</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="db-table">
-                    <table>
-                        <thead><tr><th colspan="2">tt_subjects</th></tr></thead>
-                        <tbody>
-                            <tr><td>id, session_id</td><td>subject_name</td></tr>
-                            <tr><td>periods_per_week</td><td>FK → tt_sessions</td></tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
-            <div>
-                <div class="db-table" style="margin-bottom: 16px;">
-                    <table>
-                        <thead><tr><th colspan="2">tt_teachers</th></tr></thead>
-                        <tbody>
-                            <tr><td>id, session_id</td><td>teacher_name</td></tr>
-                            <tr><td>subject_id</td><td>lunch_start, lunch_end</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="db-table">
-                    <table>
-                        <thead><tr><th colspan="2">tt_timetable</th></tr></thead>
-                        <tbody>
-                            <tr><td>session_id, class_id</td><td>day, period_number</td></tr>
-                            <tr><td>subject_id, teacher_id</td><td>period_start, period_end</td></tr>
-                            <tr><td>is_lunch</td><td>is_free</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="legend-row" style="margin-top: 16px;">
+                <span class="tag"><span class="legend-dot" style="background: rgba(221, 230, 240, 0.82);"></span>Subject period</span>
+                <span class="tag"><span class="legend-dot" style="background: var(--calendula-light);"></span>Lunch break</span>
+                <span class="tag"><span class="legend-dot" style="background: rgba(240, 236, 230, 0.82);"></span>Free period</span>
+                <span class="tag"><svg class="icon"><use href="#i-printer"></use></svg>Ready for print or PDF</span>
             </div>
         </div>
-        <p style="margin-top: 18px; font-size: 0.78rem; color: rgba(255,255,255,0.4);">All tables use ON DELETE CASCADE / SET NULL foreign keys for referential integrity.</p>
-    </div>
+    </section>
 
-    <!-- SLIDE 8: INPUT EXAMPLE -->
-    <div class="slide slide-8" style="background:#0f172a;">
-        <div class="slide-label">Step by Step</div>
-        <h2>What you <span>enter</span></h2>
-        <div class="grid-2" style="gap:16px;">
-            <div style="display:flex;flex-direction:column;gap:12px;">
-                <div class="card" style="border-color:rgba(249,115,22,0.4);background:rgba(249,115,22,0.07);">
-                    <h3>🏫 School Info</h3>
-                    <p>Name: <b style="color:#fbbf24;">Delhi Public School</b><br>
-                    Start: <b style="color:#fbbf24;">08:00 AM</b> &nbsp;|&nbsp; End: <b style="color:#fbbf24;">02:00 PM</b><br>
-                    Period: <b style="color:#fbbf24;">45 mins</b> &nbsp;|&nbsp; Lunch: <b style="color:#fbbf24;">11:00–11:30</b><br>
-                    Days: <b style="color:#fbbf24;">5 days/week</b></p>
-                </div>
-                <div class="card" style="border-color:rgba(59,130,246,0.4);background:rgba(59,130,246,0.07);">
-                    <h3>🏛️ Classes &amp; Sections</h3>
-                    <p>Class Group: <b style="color:#60a5fa;">Class 10</b><br>
-                    Sections: <b style="color:#60a5fa;">A, B, C</b><br>
-                    Each section gets its own separate timetable tab.</p>
-                </div>
+    <section class="slide">
+        <div class="panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-alert"></use></svg>Conflict Prevention</div>
+                <div class="slide-meta">Teacher availability validation</div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:12px;">
-                <div class="card" style="border-color:rgba(52,211,153,0.4);background:rgba(52,211,153,0.07);">
-                    <h3>📚 Subjects &amp; Teachers</h3>
-                    <p>
-                    Maths → <b style="color:#34d399;">Mr. Sharma</b><br>
-                    English → <b style="color:#34d399;">Ms. Priya</b><br>
-                    Science → <b style="color:#34d399;">Mr. Verma</b><br>
-                    Hindi → <b style="color:#34d399;">Ms. Rani</b><br>
-                    Computer → <b style="color:#34d399;">Mr. Singh</b>
-                    </p>
-                </div>
-                <div class="card" style="border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.07);">
-                    <h3>🔄 Section Override (optional)</h3>
-                    <p>Class 10-B Maths → <b style="color:#a78bfa;">Mr. Gupta</b> (different teacher)<br>
-                    All other subjects use the default teacher.<br>
-                    Leave blank = use default.</p>
-                </div>
+            <h2>How the system prevents <span class="accent">double booking</span></h2>
+            <div class="demo-grid">
+                <article class="card">
+                    <div class="card-header"><div class="icon-badge" style="background: var(--clementine-light); color: var(--clementine);"><svg class="icon"><use href="#i-alert"></use></svg></div><div><h3>Without conflict checks</h3></div></div>
+                    <table class="mini-table"><tbody><tr><td class="cell-conflict">Class 10-A · Mon · 8:00</td><td class="cell-conflict">Maths · Mr. Sharma</td></tr><tr><td class="cell-conflict">Class 10-B · Mon · 8:00</td><td class="cell-conflict">Maths · Mr. Sharma</td></tr><tr><td class="cell-conflict">Class 10-C · Mon · 8:00</td><td class="cell-conflict">Maths · Mr. Sharma</td></tr></tbody></table>
+                    <p style="margin-top: 12px;">The same teacher appears in three sections at the same time, which is impossible in the real world.</p>
+                </article>
+                <article class="card">
+                    <div class="card-header"><div class="icon-badge" style="background: var(--olive-light); color: var(--herb);"><svg class="icon"><use href="#i-check"></use></svg></div><div><h3>With booking checks</h3></div></div>
+                    <table class="mini-table"><tbody><tr><td class="cell-safe">Class 10-A · Mon · 8:00</td><td class="cell-safe">Maths · Mr. Sharma</td></tr><tr><td class="cell-safe">Class 10-B · Mon · 8:00</td><td class="cell-safe">English · Ms. Priya</td></tr><tr><td class="cell-safe">Class 10-C · Mon · 8:00</td><td class="cell-safe">Science · Mr. Verma</td></tr></tbody></table>
+                    <p style="margin-top: 12px;">Each teacher is reserved once per slot, so section schedules remain feasible.</p>
+                </article>
+            </div>
+            <div class="algo-block" style="margin-top: 18px;">
+                <span class="cm">// Booking guard used during assignment</span><br>
+                <span class="kw">if</span> (!empty($booked[$day][$slot][<span class="fn">strtolower</span>($teacherName)])) {<br>
+                &nbsp;&nbsp;<span class="kw">continue</span>; <span class="cm">// teacher already used in this slot</span><br>
+                }<br>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SLIDE 9: OUTPUT EXAMPLE -->
-    <div class="slide" style="background:#0f172a;">
-        <div class="slide-label">Output</div>
-        <h2>What you <span>get</span></h2>
-        <div style="background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;max-width:900px;">
-            <div style="background:#1e3a5f;padding:12px 20px;text-align:center;">
-                <b style="font-size:1rem;">Delhi Public School — Class 10 - A</b>
-                <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-left:16px;">5 days/week · 45 min periods · 7 periods/day</span>
+    <section class="slide">
+        <div class="panel hero-panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-play"></use></svg>Live Demo</div>
+                <div class="slide-meta">Deployment snapshot</div>
             </div>
-            <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:0.75rem;min-width:600px;">
-                <thead>
-                    <tr style="background:#2d4f7c;">
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">Day</th>
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">8:00–8:45</th>
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">8:45–9:30</th>
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">9:30–10:15</th>
-                        <th style="padding:8px 12px;border:1px solid #fbbf24;background:#78350f;">11:00–11:30</th>
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">11:30–12:15</th>
-                        <th style="padding:8px 12px;border:1px solid #3a5f8a;">12:15–1:00</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding:8px 12px;background:#1e3a5f;font-weight:700;border:1px solid #2d4f7c;">MON</td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Maths</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Sharma)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">English</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Priya)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Science</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Verma)</span></td>
-                        <td style="padding:8px 12px;background:#78350f;text-align:center;font-weight:700;color:#fbbf24;border:1px solid #fbbf24;">🍽 Lunch</td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Hindi</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Rani)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Computer</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Singh)</span></td>
-                    </tr>
-                    <tr style="background:rgba(255,255,255,0.02);">
-                        <td style="padding:8px 12px;background:#1e3a5f;font-weight:700;border:1px solid #2d4f7c;">TUE</td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Science</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Verma)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Maths</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Sharma)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">Computer</b><br><span style="font-size:0.65rem;color:#818cf8;">(Mr. Singh)</span></td>
-                        <td style="padding:8px 12px;background:#78350f;text-align:center;font-weight:700;color:#fbbf24;border:1px solid #fbbf24;">🍽 Lunch</td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;"><b style="color:#93c5fd;">English</b><br><span style="font-size:0.65rem;color:#818cf8;">(Ms. Priya)</span></td>
-                        <td style="padding:8px 12px;border:1px solid #2d4f7c;text-align:center;color:#475569;font-style:italic;">— Free —</td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-        </div>
-        <div style="display:flex;gap:14px;margin-top:16px;">
-            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:8px;">🔵 Subject Period</span>
-            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:8px;">🟡 Lunch Break</span>
-            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;">⬜ Free Period</span>
-            <span style="font-size:0.75rem;padding:5px 12px;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);border-radius:8px;">✅ Print / PDF ready</span>
-        </div>
-    </div>
-
-    <!-- SLIDE 10: CONFLICT PREVENTION -->
-    <div class="slide" style="background:#0f172a;">
-        <div class="slide-label">Conflict Prevention</div>
-        <h2>How <span>double booking</span> is prevented</h2>
-        <div class="grid-2" style="gap:20px;max-width:900px;">
-            <div>
-                <div style="background:#1e293b;border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:20px;margin-bottom:16px;">
-                    <p style="font-size:0.75rem;color:#f87171;font-weight:700;margin-bottom:10px;">❌ WITHOUT conflict check</p>
-                    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-A · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b></td></tr>
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-B · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b> ⚠️</td></tr>
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#fca5a5;">Class 10-C · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#f87171;">Mr. Sharma</b> ⚠️</td></tr>
-                    </table>
-                    <p style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:8px;">Same teacher in 3 classes at the same time — impossible!</p>
-                </div>
-            </div>
-            <div>
-                <div style="background:#1e293b;border:1px solid rgba(52,211,153,0.3);border-radius:12px;padding:20px;margin-bottom:16px;">
-                    <p style="font-size:0.75rem;color:#34d399;font-weight:700;margin-bottom:10px;">✅ WITH conflict check</p>
-                    <table style="width:100%;font-size:0.75rem;border-collapse:collapse;">
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-A · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Maths → <b style="color:#34d399;">Mr. Sharma</b> ✓</td></tr>
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-B · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">English → <b style="color:#34d399;">Ms. Priya</b> ✓</td></tr>
-                        <tr><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);color:#86efac;">Class 10-C · Mon · 8:00</td><td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.08);">Science → <b style="color:#34d399;">Mr. Verma</b> ✓</td></tr>
-                    </table>
-                    <p style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:8px;">Each teacher appears only once per time slot.</p>
+            <div class="outro-copy" style="align-items: flex-start; text-align: left;">
+                <h2 style="margin-bottom: 8px;">See the project <span class="accent">in action</span></h2>
+                <div class="demo-url"><svg class="icon"><use href="#i-link"></use></svg>time-table-pearl.vercel.app</div>
+                <p>Deployed for browser-based usage with no heavy setup. The project is designed to run smoothly on desktop, tablet, and mobile while keeping timetable generation fast and practical.</p>
+                <div class="tags">
+                    <span class="tag"><svg class="icon"><use href="#i-check"></use></svg>Responsive presentation</span>
+                    <span class="tag"><svg class="icon"><use href="#i-printer"></use></svg>Print-friendly output</span>
+                    <span class="tag"><svg class="icon"><use href="#i-grid"></use></svg>Section-wise views</span>
                 </div>
             </div>
         </div>
-        <div class="algo-block" style="margin-top:4px;font-size:0.78rem;">
-            <span class="cm">// Key: $booked[day][slot][teacherName] = true</span><br>
-            <span class="kw">if</span> (!empty($booked[$day][$slot][<span class="fn">strtolower</span>($teacherName)])) <span class="kw">continue</span>; <span class="cm">// skip — already booked</span>
+    </section>
+
+    <section class="slide">
+        <div class="panel outro-panel">
+            <div class="slide-header">
+                <div class="slide-label"><svg class="icon"><use href="#i-calendar"></use></svg>Closing Slide</div>
+                <div class="slide-meta">Q and A</div>
+            </div>
+            <div class="outro-copy">
+                <h1>Thank You</h1>
+                <p>TimeTable Generator combines scheduling logic, teacher conflict handling, and polished output into one simple school-focused web project.</p>
+                <div class="tags">
+                    <span class="tag"><svg class="icon"><use href="#i-code"></use></svg>PHP logic</span>
+                    <span class="tag"><svg class="icon"><use href="#i-server"></use></svg>MySQL schema</span>
+                    <span class="tag"><svg class="icon"><use href="#i-grid"></use></svg>HTML interface</span>
+                    <span class="tag"><svg class="icon"><use href="#i-wand"></use></svg>CSS design</span>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <!-- SLIDE 11: DEMO -->
-    <div class="slide" style="background:linear-gradient(135deg,#0f766e 0%,#1d4ed8 100%);align-items:center;text-align:center;">
-        <div class="slide-label" style="color:#a5f3fc;">Live Demo</div>
-        <h2 style="font-size: 2.8rem;">See it in action</h2>
-        <div class="demo-url">🔗 time-table-pearl.vercel.app</div>
-        <p style="font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 500px; line-height: 1.7;">
-            Deployed on Vercel using the vercel-php runtime.<br>
-            No database required for generation — runs fully in-memory.<br>
-            Works on any device — mobile, tablet, desktop.
-        </p>
-    </div>
-
-    <!-- SLIDE 9: THANK YOU -->
-    <div class="slide slide-9">
-        <div class="badge" style="margin-bottom: 32px;">📅 TimeTable Generator</div>
-        <h1 style="font-size: 4rem; font-weight: 900; margin-bottom: 20px;">Thank You</h1>
-        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 500px; line-height: 1.7; margin-bottom: 40px;">
-            Built with PHP · MySQL · HTML · CSS<br>
-            Deployed on Vercel · Open for questions
-        </p>
-        <div class="tags">
-            <span class="tag-pill">🐘 PHP Logic</span>
-            <span class="tag-pill">🗄️ MySQL Schema</span>
-            <span class="tag-pill">🌐 HTML Output</span>
-            <span class="tag-pill">🎨 CSS Styling</span>
-        </div>
-    </div>
-
+    </section>
 </div>
 
-<!-- NAVIGATION -->
-<div class="slide-num" id="slideNum">1 / 12</div>
+<div class="slide-num" id="slideNum">1 / 13</div>
 
 <div class="nav">
-    <button id="prevBtn" onclick="changeSlide(-1)" disabled>&#8592;</button>
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled aria-label="Previous slide"><svg class="icon"><use href="#i-arrow-left"></use></svg></button>
     <div class="dots" id="dots"></div>
-    <span class="counter" id="counter">1 / 12</span>
-    <button id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+    <span class="counter" id="counter">1 / 13</span>
+    <button id="nextBtn" onclick="changeSlide(1)" aria-label="Next slide"><svg class="icon"><use href="#i-arrow-right"></use></svg></button>
 </div>
 
 <script>
 var current = 0;
-var slides = document.querySelectorAll('.slide');
+var slides = document.querySelectorAll(".slide");
 var total = slides.length;
-var dotsEl = document.getElementById('dots');
+var dotsEl = document.getElementById("dots");
+var dots = [];
 
 for (var i = 0; i < total; i++) {
-    var d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' on' : '');
-    d.setAttribute('data-i', i);
-    d.onclick = function() { goTo(parseInt(this.getAttribute('data-i'))); };
-    dotsEl.appendChild(d);
+    var dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "dot" + (i === 0 ? " on" : "");
+    dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+    dot.setAttribute("data-index", i);
+    dot.onclick = function () {
+        goTo(parseInt(this.getAttribute("data-index"), 10));
+    };
+    dotsEl.appendChild(dot);
+    dots.push(dot);
 }
 
-function goTo(n) {
-    slides[current].classList.remove('active');
-    document.querySelectorAll('.dot')[current].classList.remove('on');
-    current = n;
-    slides[current].classList.add('active');
-    document.querySelectorAll('.dot')[current].classList.add('on');
-    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
-    document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
-    document.getElementById('prevBtn').disabled = current === 0;
-    document.getElementById('nextBtn').disabled = current === total - 1;
+function updateNav() {
+    document.getElementById("counter").textContent = (current + 1) + " / " + total;
+    document.getElementById("slideNum").textContent = (current + 1) + " / " + total;
+    document.getElementById("prevBtn").disabled = current === 0;
+    document.getElementById("nextBtn").disabled = current === total - 1;
 }
 
-function changeSlide(dir) {
-    var next = current + dir;
-    if (next >= 0 && next < total) goTo(next);
+function goTo(index) {
+    if (index < 0 || index >= total || index === current) {
+        updateNav();
+        return;
+    }
+
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("on");
+    current = index;
+    slides[current].classList.add("active");
+    dots[current].classList.add("on");
+    updateNav();
 }
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+function changeSlide(direction) {
+    var next = current + direction;
+    if (next >= 0 && next < total) {
+        goTo(next);
+    }
+}
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "PageDown") {
+        changeSlide(1);
+    }
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "PageUp") {
+        changeSlide(-1);
+    }
+    if (event.key === "Home") {
+        goTo(0);
+    }
+    if (event.key === "End") {
+        goTo(total - 1);
+    }
 });
+
+updateNav();
 </script>
 </body>
 </html>
