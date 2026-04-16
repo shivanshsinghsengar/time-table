@@ -558,87 +558,136 @@
         </div>
     </div>
 
-    <!-- SLIDE 6: ALGORITHM -->
+    <!-- SLIDE 6: ALGORITHM PART 1 -->
     <div class="slide slide-6">
         <div class="slide-label">Core Logic</div>
-        <h2>The <span>Scheduling Algorithm</span></h2>
-        <div class="algo-block">
-            <span class="cm">// For each day → each class → each time slot:</span><br>
-            <span class="kw">foreach</span> ($days <span class="kw">as</span> $day) {<br>
-            &nbsp;&nbsp;<span class="kw">foreach</span> ($classes <span class="kw">as</span> $class) {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span> ($slots <span class="kw">as</span> $slot) {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Find valid candidates (subject not used today, quota > 0,</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// teacher not on lunch, teacher not already booked this slot)</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cands = <span class="fn">findCandidates</span>($subjects, $booked, $slot);<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Pick subject with highest remaining quota (greedy)</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">usort</span>($cands, <span class="kw">fn</span>($a,$b) => $b[<span class="str">'quota'</span>] - $a[<span class="str">'quota'</span>]);<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$quota[$class][$subject]--; &nbsp;<span class="cm">// decrement</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$booked[$day][$slot][$teacher] = <span class="kw">true</span>;<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
-            &nbsp;&nbsp;}<br>
-            }
-        </div>
-        <div style="display: flex; gap: 16px; margin-top: 20px;">
-            <div class="card" style="flex: 1;">
-                <h3>Conflict Prevention</h3>
-                <p>$booked[day][slot][teacher] = true ensures no teacher is assigned twice in the same slot across different classes.</p>
+        <h2>Scheduling <span>Algorithm</span> — How it thinks</h2>
+        <div style="display:flex;gap:20px;align-items:flex-start;">
+            <div style="flex:1;">
+                <p style="font-size:0.82rem;color:rgba(255,255,255,0.6);margin-bottom:14px;line-height:1.7;">
+                    The algorithm uses a <b style="color:#fbbf24;">Greedy approach</b> — it loops through every day, every class, and every time slot. For each slot it finds all valid subjects and picks the one with the highest remaining quota.
+                </p>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="background:rgba(129,140,248,0.1);border-left:3px solid #818cf8;padding:10px 14px;border-radius:0 8px 8px 0;">
+                        <b style="color:#818cf8;font-size:0.8rem;">Step 1 — Build Time Slots</b>
+                        <p style="font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:4px;">Convert 08:00–14:00 with 45 min periods into an array: [08:00–08:45, 08:45–09:30 … LUNCH … 11:30–12:15]</p>
+                    </div>
+                    <div style="background:rgba(52,211,153,0.1);border-left:3px solid #34d399;padding:10px 14px;border-radius:0 8px 8px 0;">
+                        <b style="color:#34d399;font-size:0.8rem;">Step 2 — Set Quotas</b>
+                        <p style="font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:4px;">Total week slots ÷ number of subjects = periods per subject per week. e.g. 30 slots ÷ 5 subjects = 6 periods each.</p>
+                    </div>
+                    <div style="background:rgba(251,191,36,0.1);border-left:3px solid #fbbf24;padding:10px 14px;border-radius:0 8px 8px 0;">
+                        <b style="color:#fbbf24;font-size:0.8rem;">Step 3 — Fill Slots (Greedy)</b>
+                        <p style="font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:4px;">For each slot, find all valid subjects → sort by remaining quota → assign the highest. Decrement quota. Mark teacher as booked.</p>
+                    </div>
+                    <div style="background:rgba(239,68,68,0.1);border-left:3px solid #f87171;padding:10px 14px;border-radius:0 8px 8px 0;">
+                        <b style="color:#f87171;font-size:0.8rem;">Step 4 — Fallback</b>
+                        <p style="font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:4px;">If no valid subject found (all teachers busy / on lunch), the slot becomes a FREE PERIOD automatically.</p>
+                    </div>
+                </div>
             </div>
-            <div class="card" style="flex: 1;">
-                <h3>Graceful Fallback</h3>
-                <p>If no valid candidate exists for a slot, it automatically becomes a Free Period instead of crashing.</p>
+            <div style="flex:1;">
+                <div class="algo-block" style="font-size:0.78rem;">
+<span class="cm">// Loop: Day → Class → Slot</span><br>
+<span class="kw">foreach</span>(<span class="str">$days</span> <span class="kw">as</span> <span class="str">$day</span>) {<br>
+&nbsp;&nbsp;<span class="kw">foreach</span>(<span class="str">$classes</span> <span class="kw">as</span> <span class="str">$ci</span> => <span class="str">$class</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span>(<span class="str">$slots</span> <span class="kw">as</span> <span class="str">$slot</span>) {<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Skip lunch slots</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(<span class="str">$slot</span>[<span class="fn">'is_lunch'</span>]) <span class="kw">continue</span>;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Find valid candidates</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">$cands</span> = [];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">foreach</span>(<span class="str">$subjects</span> <span class="kw">as</span> <span class="str">$si</span> => <span class="str">$sub</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(<span class="str">$quota</span>[<span class="str">$ci</span>][<span class="str">$si</span>] <= 0) <span class="kw">continue</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(<span class="fn">teacherOnLunch</span>(<span class="str">$teacher</span>, <span class="str">$slot</span>)) <span class="kw">continue</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span>(<span class="str">$booked</span>[<span class="str">$day</span>][<span class="str">$slot</span>][<span class="str">$teacher</span>]) <span class="kw">continue</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">$cands</span>[] = [<span class="fn">'quota'</span> => <span class="str">$quota</span>[<span class="str">$ci</span>][<span class="str">$si</span>]];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// Pick highest quota (greedy)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">usort</span>(<span class="str">$cands</span>, <span class="kw">fn</span>(<span class="str">$a</span>,<span class="str">$b</span>) => <span class="str">$b</span>[<span class="fn">'quota'</span>] - <span class="str">$a</span>[<span class="fn">'quota'</span>]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">$quota</span>[<span class="str">$ci</span>][<span class="str">$si</span>]--;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">$booked</span>[<span class="str">$day</span>][<span class="str">$slot</span>][<span class="str">$teacher</span>] = <span class="kw">true</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+}
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- SLIDE 7: DATABASE -->
+    <!-- SLIDE 7: DATABASE SCHEMA -->
     <div class="slide slide-7">
         <div class="slide-label">Database</div>
-        <h2>MySQL <span>Schema</span></h2>
-        <div class="grid-2">
-            <div>
-                <div class="db-table" style="margin-bottom: 16px;">
-                    <table>
-                        <thead><tr><th colspan="2">tt_sessions</th></tr></thead>
-                        <tbody>
-                            <tr><td>id, school_name</td><td>school_start, school_end</td></tr>
-                            <tr><td>period_duration</td><td>lunch_start, lunch_end</td></tr>
-                            <tr><td>days_per_week</td><td>created_at</td></tr>
-                        </tbody>
-                    </table>
+        <h2>MySQL <span>Schema</span> — 5 Tables</h2>
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="flex:1.2;display:flex;flex-direction:column;gap:10px;">
+
+                <div style="background:#1e293b;border:1px solid rgba(79,70,229,0.4);border-radius:10px;overflow:hidden;">
+                    <div style="background:rgba(79,70,229,0.3);padding:7px 14px;font-size:0.75rem;font-weight:700;color:#a5b4fc;">📋 tt_sessions — stores one timetable session per school</div>
+                    <div style="padding:10px 14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:#94a3b8;">
+                        <span style="color:#818cf8;">id</span> INT AUTO_INCREMENT PRIMARY KEY,<br>
+                        <span style="color:#34d399;">school_name</span> VARCHAR(200),<br>
+                        <span style="color:#fbbf24;">school_start</span> TIME, &nbsp;<span style="color:#fbbf24;">school_end</span> TIME,<br>
+                        <span style="color:#fbbf24;">period_duration</span> INT, &nbsp;<span style="color:#fbbf24;">days_per_week</span> INT,<br>
+                        <span style="color:#f87171;">lunch_start</span> TIME, &nbsp;<span style="color:#f87171;">lunch_end</span> TIME
+                    </div>
                 </div>
-                <div class="db-table">
-                    <table>
-                        <thead><tr><th colspan="2">tt_subjects</th></tr></thead>
-                        <tbody>
-                            <tr><td>id, session_id</td><td>subject_name</td></tr>
-                            <tr><td>periods_per_week</td><td>FK → tt_sessions</td></tr>
-                        </tbody>
-                    </table>
+
+                <div style="background:#1e293b;border:1px solid rgba(52,211,153,0.4);border-radius:10px;overflow:hidden;">
+                    <div style="background:rgba(52,211,153,0.15);padding:7px 14px;font-size:0.75rem;font-weight:700;color:#6ee7b7;">📚 tt_subjects — one row per subject</div>
+                    <div style="padding:10px 14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:#94a3b8;">
+                        <span style="color:#818cf8;">id</span> INT, &nbsp;<span style="color:#60a5fa;">session_id</span> INT,<br>
+                        <span style="color:#34d399;">subject_name</span> VARCHAR(100),<br>
+                        <span style="color:#fbbf24;">periods_per_week</span> INT DEFAULT 5,<br>
+                        FOREIGN KEY (<span style="color:#60a5fa;">session_id</span>) REFERENCES tt_sessions(<span style="color:#818cf8;">id</span>) <span style="color:#f87171;">ON DELETE CASCADE</span>
+                    </div>
                 </div>
+
+                <div style="background:#1e293b;border:1px solid rgba(251,191,36,0.4);border-radius:10px;overflow:hidden;">
+                    <div style="background:rgba(251,191,36,0.1);padding:7px 14px;font-size:0.75rem;font-weight:700;color:#fde68a;">👨‍🏫 tt_teachers — one row per teacher</div>
+                    <div style="padding:10px 14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:#94a3b8;">
+                        <span style="color:#818cf8;">id</span> INT, &nbsp;<span style="color:#60a5fa;">session_id</span> INT, &nbsp;<span style="color:#a78bfa;">subject_id</span> INT,<br>
+                        <span style="color:#34d399;">teacher_name</span> VARCHAR(100),<br>
+                        <span style="color:#f87171;">lunch_start</span> TIME, &nbsp;<span style="color:#f87171;">lunch_end</span> TIME,<br>
+                        FOREIGN KEY (<span style="color:#a78bfa;">subject_id</span>) REFERENCES tt_subjects(<span style="color:#818cf8;">id</span>) <span style="color:#f87171;">ON DELETE CASCADE</span>
+                    </div>
+                </div>
+
             </div>
-            <div>
-                <div class="db-table" style="margin-bottom: 16px;">
-                    <table>
-                        <thead><tr><th colspan="2">tt_teachers</th></tr></thead>
-                        <tbody>
-                            <tr><td>id, session_id</td><td>teacher_name</td></tr>
-                            <tr><td>subject_id</td><td>lunch_start, lunch_end</td></tr>
-                        </tbody>
-                    </table>
+            <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+
+                <div style="background:#1e293b;border:1px solid rgba(59,130,246,0.4);border-radius:10px;overflow:hidden;">
+                    <div style="background:rgba(59,130,246,0.15);padding:7px 14px;font-size:0.75rem;font-weight:700;color:#93c5fd;">🏫 tt_classes — one row per class/section</div>
+                    <div style="padding:10px 14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:#94a3b8;">
+                        <span style="color:#818cf8;">id</span> INT, &nbsp;<span style="color:#60a5fa;">session_id</span> INT,<br>
+                        <span style="color:#34d399;">class_name</span> VARCHAR(100),<br>
+                        FOREIGN KEY (<span style="color:#60a5fa;">session_id</span>) REFERENCES tt_sessions(<span style="color:#818cf8;">id</span>) <span style="color:#f87171;">ON DELETE CASCADE</span>
+                    </div>
                 </div>
-                <div class="db-table">
-                    <table>
-                        <thead><tr><th colspan="2">tt_timetable</th></tr></thead>
-                        <tbody>
-                            <tr><td>session_id, class_id</td><td>day, period_number</td></tr>
-                            <tr><td>subject_id, teacher_id</td><td>period_start, period_end</td></tr>
-                            <tr><td>is_lunch</td><td>is_free</td></tr>
-                        </tbody>
-                    </table>
+
+                <div style="background:#1e293b;border:1px solid rgba(239,68,68,0.4);border-radius:10px;overflow:hidden;">
+                    <div style="background:rgba(239,68,68,0.12);padding:7px 14px;font-size:0.75rem;font-weight:700;color:#fca5a5;">📅 tt_timetable — the final generated grid</div>
+                    <div style="padding:10px 14px;font-family:'Courier New',monospace;font-size:0.72rem;line-height:1.9;color:#94a3b8;">
+                        <span style="color:#818cf8;">id</span> INT, &nbsp;<span style="color:#60a5fa;">session_id</span> INT, &nbsp;<span style="color:#60a5fa;">class_id</span> INT,<br>
+                        <span style="color:#34d399;">day</span> VARCHAR(20), &nbsp;<span style="color:#34d399;">period_number</span> INT,<br>
+                        <span style="color:#fbbf24;">period_start</span> TIME, &nbsp;<span style="color:#fbbf24;">period_end</span> TIME,<br>
+                        <span style="color:#a78bfa;">subject_id</span> INT, &nbsp;<span style="color:#a78bfa;">teacher_id</span> INT,<br>
+                        <span style="color:#f87171;">is_lunch</span> TINYINT(1), &nbsp;<span style="color:#f87171;">is_free</span> TINYINT(1)
+                    </div>
                 </div>
+
+                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+                    <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+                        🔗 All tables are linked via <b style="color:#60a5fa;">session_id</b> foreign key.<br>
+                        🗑️ Deleting a session removes all related data automatically (<b style="color:#f87171;">ON DELETE CASCADE</b>).<br>
+                        🔒 subject_id and teacher_id in tt_timetable use <b style="color:#fbbf24;">ON DELETE SET NULL</b> to preserve history.
+                    </p>
+                </div>
+
             </div>
         </div>
-        <p style="margin-top: 18px; font-size: 0.78rem; color: rgba(255,255,255,0.4);">All tables use ON DELETE CASCADE / SET NULL foreign keys for referential integrity.</p>
     </div>
 
     <!-- SLIDE 8: INPUT EXAMPLE -->
@@ -767,18 +816,6 @@
             <span class="cm">// Key: $booked[day][slot][teacherName] = true</span><br>
             <span class="kw">if</span> (!empty($booked[$day][$slot][<span class="fn">strtolower</span>($teacherName)])) <span class="kw">continue</span>; <span class="cm">// skip — already booked</span>
         </div>
-    </div>
-
-    <!-- SLIDE 11: DEMO -->
-    <div class="slide" style="background:linear-gradient(135deg,#0f766e 0%,#1d4ed8 100%);align-items:center;text-align:center;">
-        <div class="slide-label" style="color:#a5f3fc;">Live Demo</div>
-        <h2 style="font-size: 2.8rem;">See it in action</h2>
-        <div class="demo-url">🔗 time-table-pearl.vercel.app</div>
-        <p style="font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 500px; line-height: 1.7;">
-            Deployed on Vercel using the vercel-php runtime.<br>
-            No database required for generation — runs fully in-memory.<br>
-            Works on any device — mobile, tablet, desktop.
-        </p>
     </div>
 
     <!-- SLIDE 9: THANK YOU -->
